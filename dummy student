@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Amina Yusuf",
+    "reg_number": "U18CO1001",
+    "department": "Computer Science",
+    "faculty": "Physical Sciences",
+    "level": "400",
+    "gender": "Female",
+    "password": "password123"
+  },
+  {
+    "name": "Musa Ibrahim",
+    "reg_number": "U19EE1002",
+    "department": "Electrical Engineering",
+    "faculty": "Engineering",
+    "level": "300",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "Grace Okoro",
+    "reg_number": "U20MB1003",
+    "department": "Microbiology",
+    "faculty": "Life Sciences",
+    "level": "200",
+    "gender": "Female",
+    "password": "password123"
+  },
+  {
+    "name": "Tunde Balogun",
+    "reg_number": "U21ME1004",
+    "department": "Mechanical Engineering",
+    "faculty": "Engineering",
+    "level": "100",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "Zainab Abdullahi",
+    "reg_number": "U18CH1005",
+    "department": "Chemistry",
+    "faculty": "Physical Sciences",
+    "level": "400",
+    "gender": "Female",
+    "password": "password123"
+  },
+  {
+    "name": "Emeka Eze",
+    "reg_number": "U19CE1006",
+    "department": "Civil Engineering",
+    "faculty": "Engineering",
+    "level": "300",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "Fatima Bello",
+    "reg_number": "U20PH1007",
+    "department": "Physics",
+    "faculty": "Physical Sciences",
+    "level": "200",
+    "gender": "Female",
+    "password": "password123"
+  },
+  {
+    "name": "Ibrahim Sani",
+    "reg_number": "U21CS1008",
+    "department": "Computer Science",
+    "faculty": "Physical Sciences",
+    "level": "100",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "Ngozi Chukwu",
+    "reg_number": "U18MB1009",
+    "department": "Microbiology",
+    "faculty": "Life Sciences",
+    "level": "400",
+    "gender": "Female",
+    "password": "password123"
+  },
+  {
+    "name": "John Danladi",
+    "reg_number": "U19CH1010",
+    "department": "Chemical Engineering",
+    "faculty": "Engineering",
+    "level": "300",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "John Danladi",
+    "reg_number": "U19CH1010",
+    "department": "Chemical Engineering",
+    "faculty": "Engineering",
+    "level": "300",
+    "gender": "Male",
+    "password": "password123"
+  },
+  {
+    "name": "John Danladi",
+    "reg_number": "U19CH1010",
+    "department": "Chemical Engineering",
+    "faculty": "Engineering",
+    "level": "300",
+    "gender": "Male",
+    "password": "password123"
+  }
+]

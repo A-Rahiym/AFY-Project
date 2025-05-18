@@ -1,0 +1,37 @@
+hostel-accommodation-system/
+├── src/
+│   ├── config/            # Configuration files (e.g., database, environment variables)
+│   │   ├── db.js
+│   │   └── env.js
+│   ├── controllers/       # Business logic (handles requests/responses)
+│   │   ├── authController.js
+│   │   ├── studentController.js
+│   │   ├── hostelController.js
+│   │   ├── bookingController.js
+│   │   └── adminController.js
+│   ├── models/            # Database models & schemas
+│   │   ├── Student.js
+│   │   ├── Admin.js
+│   │   ├── Hostel.js
+│   │   ├── Room.js
+│   │   └── Booking.js
+│   ├── routes/            # API route definitions
+│   │   ├── authRoutes.js
+│   │   ├── studentRoutes.js
+│   │   ├── hostelRoutes.js
+│   │   ├── bookingRoutes.js
+│   │   └── adminRoutes.js
+│   ├── middlewares/       # Custom middleware (authentication, logging, error handling)
+│   │   ├── authMiddleware.js
+│   │   └── errorHandler.js
+│   ├── services/          # Business logic or external API interactions
+│   │   └── tokenService.js
+│   ├── utils/             # Utility functions
+│   │   └── logger.js
+│   ├── views/             # Template files (if using a view engine like Pug or EJS)
+│   │   └── ...
+│   └── app.js             # Express app initialization
+├── .env                   # Environment variables
+├── .gitignore             # Git ignore file
+├── package.json           # Project metadata and dependencies
+└── README.md              # Project documentation
