@@ -1,6 +1,7 @@
 // src/app.js
 import express from 'express';
 import studentRoutes from './routes/studentRoutes.js';
+import cors from 'cors';
 // import authRoutes from './routes/authRoutes.js';
 // Import other route files as needed
 
@@ -11,6 +12,13 @@ app.get('/', (req, res) => {
   res.send('AFY project');
 });
 
+// CORS config
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Allow only your frontend origin
+    credentials: true, // Allow credentials like cookies and headers
+  })
+);
 
 app.use(express.json());
 
