@@ -26,10 +26,10 @@ export default function SelectAccommodation() {
         setMessage('❌ Not authenticated. Please login first.');
         return;
       }
-
       const res = await selectAccommodation(formData, token);
       setMessage('✅ Accommodation selected successfully!');
       console.log(res);
+      console.log(res.token);
     } catch (err) {
       console.error(err);
       setMessage(`❌ Error: ${err.response?.data?.error || err.message}`);

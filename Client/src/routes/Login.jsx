@@ -14,6 +14,7 @@ const Login = () => {
       const res = await loginStudent(form);
       if (res?.token) {
         localStorage.setItem('token', res.token);
+        console.log('Login successful:', res.token);
         setMessage('✅ Login successful!');
       } else {
         setMessage('❌ Login failed. Please check your credentials.');

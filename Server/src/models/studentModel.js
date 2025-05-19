@@ -56,10 +56,24 @@ export const getStudentByRegNo = async (reg_number) => {
     .select("*")
     .eq("reg_number", reg_number)
     .single();
-
-  if (error) throw error;
+    if (error || !data) {
+    throw new Error('Unauthorized: Invalid token');
+  }
   return data;
 };
+
+export const getStudentByToken = async (token) => {
+  const { data, error } = await supabase
+    .from('students')
+    .select('*')
+    .eq('token', token)
+    .single();
+  if (error || !data) {
+    throw new Error('Unauthorized: Invalid token');
+  }
+  return data;
+};
+
 
 export const updateStudentToken = async (reg_number, token) => {
   const { error } = await supabase
@@ -81,6 +95,8 @@ export const markStudentAsPaid = async (reg_number) => {
   if (error) throw new Error(error.message);
   return data;
 };
+
+
 
 export const selectAccommodation = async (reg_number, hostel, block, room) => {
   const { data, error } = await supabase
