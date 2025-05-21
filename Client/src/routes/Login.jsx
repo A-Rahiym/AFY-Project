@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
-import { loginStudent } from '../api/studentApi';
-import { Link, useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
+import React, { useState } from "react";
+import { loginStudent } from "../api/studentApi";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 
 const Login = () => {
-  const [form, setForm] = useState({ reg_number: '', password: '' });
-  const [message, setMessage] = useState('');
+  const [form, setForm] = useState({ reg_number: "", password: "" });
+  const [message, setMessage] = useState("");
   const navigate = useNavigate(); // ✅ Initialize navigate
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setMessage('Logging in...');
+    setMessage("Logging in...");
     try {
       const res = await loginStudent(form);
       if (res?.token) {
-        localStorage.setItem('token', res.token);
-        console.log('Login successful:', res.token);
-        setMessage('✅ Login successful!');
-        navigate('/dashboard'); // ✅ Redirect
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("studentId", res.student.id);
+        console.log("Login successful:", res);
+        setMessage("✅ Login successful!");
+        // console.log(res.student.id)
+        navigate("/dashboard"); // ✅ Redirect
       } else {
-        setMessage('❌ Login failed. Please check your credentials.');
+        setMessage("❌ Login failed. Please check your credentials.");
       }
     } catch (err) {
       console.error(err);
@@ -33,7 +36,9 @@ const Login = () => {
       <h2 className="text-2xl font-semibold mb-6 text-center">Student Login</h2>
       <form onSubmit={handleLogin}>
         <div className="mb-4">
-          <label className="block text-lg font-medium mb-2">Registration Number</label>
+          <label className="block text-lg font-medium mb-2">
+            Registration Number
+          </label>
           <input
             type="text"
             name="reg_number"
@@ -64,14 +69,21 @@ const Login = () => {
       </form>
 
       <div className="mt-4 text-center text-sm text-gray-600">
-        Don’t have an account?{' '}
-        <Link to="/register" className="text-blue-600 hover:underline font-medium">
+        Don’t have an account?{" "}
+        <Link
+          to="/register"
+          className="text-blue-600 hover:underline font-medium"
+        >
           Register
         </Link>
       </div>
 
       {message && (
-        <p className={`mt-6 text-center text-lg font-semibold ${message.startsWith('❌') ? 'text-red-500' : 'text-green-500'}`}>
+        <p
+          className={`mt-6 text-center text-lg font-semibold ${
+            message.startsWith("❌") ? "text-red-500" : "text-green-500"
+          }`}
+        >
           {message}
         </p>
       )}

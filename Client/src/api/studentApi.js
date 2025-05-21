@@ -48,9 +48,8 @@ export const selectAccommodation = async (formData, token) => {
   return res.data;
 };
 
-// Get student profile
-export const getStudentProfile = async (token) => {
-  const res = await axiosInstance.get('/profile', {
+export const getStudentProfile = async (id, token) => {
+  const res = await axiosInstance.get(`/profile?id=${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

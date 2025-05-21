@@ -1,21 +1,23 @@
 // src/components/ViewProfile.js
-import { useState, useEffect } from 'react';
-import { getStudentProfile } from '../api/studentApi';
+import { useState, useEffect } from "react";
+import { getStudentProfile } from "../api/studentApi";
 
 const ViewProfile = () => {
   const [profile, setProfile] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setMessage('❌ Not authenticated. Please login first.');
+      const token = localStorage.getItem("token");
+      const studentId = localStorage.getItem("studentId");
+
+      if (!token || !studentId) {
+        setMessage("❌ Not authenticated. Please login first.");
         return;
       }
 
       try {
-        const data = await getStudentProfile(token);
+        const data = await getStudentProfile(studentId, token); // Pass both id and token
         setProfile(data);
       } catch (err) {
         setMessage(`❌ Error: ${err.response?.data?.error || err.message}`);
@@ -43,7 +45,9 @@ const ViewProfile = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Student Profile</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center">
+        Student Profile
+      </h2>
       <div className="mb-6">
         <div className="mb-4">
           <strong className="text-lg">Name:</strong>
@@ -71,8 +75,12 @@ const ViewProfile = () => {
         </div>
         <div className="mb-4">
           <strong className="text-lg">Payment Status:</strong>
-          <p className={`text-gray-600 ${profile.has_paid ? 'text-green-500' : 'text-red-500'}`}>
-            {profile.has_paid ? 'Paid' : 'Not Paid'}
+          <p
+            className={`text-gray-600 ${
+              profile.has_paid ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {profile.has_paid ? "Paid" : "Not Paid"}
           </p>
         </div>
       </div>

@@ -50,30 +50,36 @@ export const createStudent = async (studentData) => {
 };
 
 
-export const getStudentByRegNo = async (reg_number) => {
+export const getStudentById = async (id) => {
   const { data, error } = await supabase
     .from("students")
     .select("*")
-    .eq("reg_number", reg_number)
+    .eq("id", id)
     .single();
-    if (error || !data) {
-    throw new Error('Unauthorized: Invalid token');
-  }
-  return data;
-};
 
-export const getStudentByToken = async (token) => {
-  const { data, error } = await supabase
-    .from('students')
-    .select('*')
-    .eq('token', token)
-    .single();
   if (error || !data) {
-    throw new Error('Unauthorized: Invalid token');
+    throw new Error('Unauthorized: Invalid ID');
   }
+
   return data;
 };
 
+
+export const getStudentByRegNo = async (reg_number) => {
+  try {
+    const { data, error } = await supabase
+      .from("students") // Table name in Supabase
+      .select("*")
+      .eq("reg_number", reg_number)
+      .single(); // Fetch a single record
+    if (error || !data) {
+      throw new Error('Student not found');
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error.message || 'An error occurred while fetching student data');
+  }
+};
 
 export const updateStudentToken = async (reg_number, token) => {
   const { error } = await supabase
