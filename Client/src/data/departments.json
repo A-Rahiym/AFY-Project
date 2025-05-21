@@ -1,0 +1,6 @@
+{
+  "Science": ["Computer Science", "Mathematics", "Physics", "Chemistry"],
+  "Engineering": ["Mechanical Engineering", "Electrical Engineering", "Civil Engineering"],
+  "Social Sciences": ["Business Admin", "Economics", "Sociology"],
+  "Arts": ["English", "History", "Philosophy"]
+}

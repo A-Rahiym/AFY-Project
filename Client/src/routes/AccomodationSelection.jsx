@@ -35,7 +35,6 @@ export default function SelectAccommodation() {
       setMessage(`❌ Error: ${err.response?.data?.error || err.message}`);
     }
   };
-
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-6 text-center">Accommodation Selection</h2>
