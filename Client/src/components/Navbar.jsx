@@ -27,6 +27,11 @@ const Navbar = () => {
             Accommodation
           </Link>
         </li>
+        <li>
+          <Link to="/profile" className="hover:underline">
+            Profile
+          </Link>
+          </li>
       </ul>
     </div>
     </nav>

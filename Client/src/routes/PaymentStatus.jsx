@@ -16,6 +16,7 @@ const PaymentStatus = () => {
     try {
       await updatePaymentStatus(regNumber, { status });
       setMessage('✅ Payment status updated successfully.');
+      console.log('Payment status updated:', { regNumber, status });
     } catch (error) {
       console.error(error);
       setMessage(`❌ Error: ${error.response?.data?.error || error.message}`);

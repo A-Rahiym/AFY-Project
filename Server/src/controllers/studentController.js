@@ -4,6 +4,7 @@ import {
   getStudentByRegNo,
   updateStudentToken,
   markStudentAsPaid,
+  getStudentByToken,
   selectAccommodation
 } from '../models/studentModel.js';
 
@@ -112,5 +113,21 @@ export const handleAccommodationSelection = async (req, res) => {
     res.status(200).json({ success: true, message: 'Accommodation selected successfully', selection });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
+  }
+};
+// controllers/studentController.js
+// import { getStudentByToken } from "../models/studentModel.js";
+export const getProfile = async (req, res) => {
+  try {
+    const reg_no = req.body.reg_number;
+    const student = await getStudentByRegNo(reg_no);
+
+    // Remove sensitive fields
+    delete student.password;
+    delete student.token;
+
+  res.status(200).json(student);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

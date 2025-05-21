@@ -5,6 +5,7 @@ import Register from './routes/Register';
 import Login from './routes/Login';
 import PaymentStatus from './routes/PaymentStatus';
 import AccommodationSelection from './routes/AccomodationSelection';
+import ViewProfile from './routes/Profile';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/payment-status" element={<PaymentStatus />} />
+          <Route path="/profile" element={<ViewProfile />} />
           <Route path="/select-accommodation" element={<AccommodationSelection />} />
         </Routes>
       </div>
