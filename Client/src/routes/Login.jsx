@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { loginStudent } from '../api/studentApi';
+import { Link, useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
 
 const Login = () => {
   const [form, setForm] = useState({ reg_number: '', password: '' });
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); // ✅ Initialize navigate
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -16,6 +18,7 @@ const Login = () => {
         localStorage.setItem('token', res.token);
         console.log('Login successful:', res.token);
         setMessage('✅ Login successful!');
+        navigate('/dashboard'); // ✅ Redirect
       } else {
         setMessage('❌ Login failed. Please check your credentials.');
       }
@@ -26,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-sm mx-auto  my-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-6 text-center">Student Login</h2>
       <form onSubmit={handleLogin}>
         <div className="mb-4">
@@ -40,7 +43,6 @@ const Login = () => {
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
-
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Password</label>
           <input
@@ -60,6 +62,13 @@ const Login = () => {
           Login
         </button>
       </form>
+
+      <div className="mt-4 text-center text-sm text-gray-600">
+        Don’t have an account?{' '}
+        <Link to="/register" className="text-blue-600 hover:underline font-medium">
+          Register
+        </Link>
+      </div>
 
       {message && (
         <p className={`mt-6 text-center text-lg font-semibold ${message.startsWith('❌') ? 'text-red-500' : 'text-green-500'}`}>
