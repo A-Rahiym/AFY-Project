@@ -17,7 +17,7 @@ const Navbar = () => {
         <ul className="flex items-center gap-6">
           <li>
             <Link to="/dashboard" className="hover:underline">
-              Payment Status
+              Dashboard
             </Link>
           </li>
           <li>
