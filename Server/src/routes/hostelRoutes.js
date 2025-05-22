@@ -1,8 +1,9 @@
 import express from 'express';
-import { getHostels } from '../controllers/hostelController.js';
+import { getHostels, bookAccommodation } from '../controllers/hostelController.js';
 
 const hostelRouter = express.Router();
 
 
 hostelRouter.get('/:hostelName', getHostels);
+hostelRouter.post('/book', bookAccommodation);
 export default hostelRouter;

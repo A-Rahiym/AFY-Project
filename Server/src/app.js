@@ -20,10 +20,7 @@ app.use(
     credentials: true, // Allow credentials like cookies and headers
   })
 );
-
 app.use(express.json());
-
-
 app.use('/api/students', studentRoutes);
 app.use('/api/hostels', hostelRoutes);
 // Register routes
