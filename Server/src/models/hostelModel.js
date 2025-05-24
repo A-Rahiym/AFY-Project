@@ -29,13 +29,13 @@ export const getHostelDetails = async (hostelName) => {
   return data;
 };
 
-export const createHostelBooking = async (roomId, userId) => {
+export const createHostelBooking = async (roomId, studentId) => { // Changed parameter name to studentId
   const { data, error } = await supabase
     .from('hostel_booking')
     .insert([
       {
         room_id: roomId,
-        user_id: userId,
+        student_id: studentId, // Changed column name to student_id
         status: 'PENDING' // Default status, can be updated later
       }
     ])

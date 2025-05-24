@@ -22,6 +22,7 @@ app.use(
 );
 app.use(express.json());
 app.use('/api/students', studentRoutes);
+app.use(express.json());
 app.use('/api/hostels', hostelRoutes);
 // Register routes
 // app.use('/api/auth', authRoutes);

@@ -29,6 +29,11 @@ const Navbar = () => {
             <Link to="/select-accommodation" className="hover:underline">
               Accommodation
             </Link>
+          </li>{" "}
+          <li>
+            <Link to="/book-room" className="hover:underline">
+              Book Room
+            </Link>
           </li>
           <li>
             <Link to="/profile" className="hover:underline">

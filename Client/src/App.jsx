@@ -7,6 +7,7 @@ import AccommodationSelection from './routes/AccomodationSelection';
 import ViewProfile from './routes/Profile';
 import Navbar from './components/Navbar';
 import Dashboard from './routes/Dashboard';
+import HostelAndRoomBooking from './routes/HostelAndRoomBooking';
 
 const AppContent = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/payment-status" element={<PaymentStatus />} />
         <Route path="/profile" element={<ViewProfile />} />
+        <Route path="/book-room" element={<HostelAndRoomBooking/>} />
         <Route path="/select-accommodation" element={<AccommodationSelection />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>

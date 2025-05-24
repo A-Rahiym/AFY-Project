@@ -15,6 +15,7 @@ export const loginStudent = async (loginData) => {
 };
 
 
+
 // Update payment status with token
 export const updatePaymentStatus = async (reg_number, data) => {
   // const token = localStorage.getItem('token');
@@ -56,6 +57,10 @@ export const getStudentProfile = async (id, token) => {
   });
   return res.data;
 };
+
+
+
+
 
 // // Select accommodation (needs auth)
 // export const selectAccommodation = async (accommodationData) => {
