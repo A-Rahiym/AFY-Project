@@ -41,6 +41,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data:', formData);
     setMessage('Submitting...');
     try {
       const res = await registerStudent(formData);

@@ -1,5 +1,6 @@
 import supabase from "../config/supabase.js";
-export const getHostelDetails = async (hostelName) => {
+
+export const getHostelDetailsModel = async (hostelName) => {
   const { data, error } = await supabase
     .from('hostel')
     .select(`

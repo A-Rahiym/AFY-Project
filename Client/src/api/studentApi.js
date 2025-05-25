@@ -4,13 +4,13 @@ import axiosInstance from './axiosInstance';
 const token = localStorage.getItem('token');
 // Register
 export const registerStudent = async (studentData) => {
-  const res = await axiosInstance.post('/register', studentData);
+  const res = await axiosInstance.post('/student/register', studentData);
   return res.data;
 };
 
 // Login
 export const loginStudent = async (loginData) => {
-  const res = await axiosInstance.post('/login', loginData);
+  const res = await axiosInstance.post('/student/login', loginData);
   return res.data;
 };
 
@@ -21,7 +21,7 @@ export const updatePaymentStatus = async (reg_number, data) => {
   // const token = localStorage.getItem('token');
   console.log(token);
   const res = await axiosInstance.put(
-    `/payment-status/${reg_number}`,
+    `/students/payment-status/${reg_number}`,
     data,
     {
       headers: {
@@ -38,7 +38,7 @@ export const updatePaymentStatus = async (reg_number, data) => {
 export const selectAccommodation = async (formData, token) => {
   // const token = localStorage.getItem('token');
   const res = await axiosInstance.post(
-    '/select-accommodation',
+    '/students/select-accommodation',
     formData,
     {
       headers: {
@@ -50,7 +50,7 @@ export const selectAccommodation = async (formData, token) => {
 };
 
 export const getStudentProfile = async (id, token) => {
-  const res = await axiosInstance.get(`/profile?id=${id}`, {
+  const res = await axiosInstance.get(`/student/profile?id=${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

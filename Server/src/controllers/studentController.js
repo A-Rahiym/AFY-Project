@@ -57,7 +57,6 @@ export const loginStudent = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
-
     // Generate JWT token
     const token = generateToken({ reg_number });
 

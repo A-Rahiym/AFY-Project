@@ -21,7 +21,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use('/api/students', studentRoutes);
+app.use('/api/student', studentRoutes);
 app.use(express.json());
 app.use('/api/hostels', hostelRoutes);
 // Register routes
