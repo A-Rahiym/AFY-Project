@@ -7,6 +7,13 @@ export const getHostelDetails = async (hostelName) => {
   return res.data;
 };
 
+export const checkBooking = async (studentId, token) => {
+  const res = await axiosInstance.get(`/hostels/booking-status/${studentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 
 export const bookAccommodation = async (roomId, studentId, token) => {
   console.log("Attempting to book accommodation..."); // Log for debugging
