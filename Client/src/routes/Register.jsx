@@ -1,5 +1,6 @@
+// src/components/Register.jsx
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { registerStudent } from '../api/studentApi';
 import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
@@ -7,7 +8,7 @@ import faculties from '../data/faculties.json';
 import departmentsData from '../data/departments.json';
 
 const Register = () => {
-  const navigate = useNavigate(); // ✅ create navigate function
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -17,6 +18,9 @@ const Register = () => {
     level: '',
     gender: '',
     password: '',
+    student_type: 'undergraduate', // Default value
+    is_official: 'No',             // Default string value for select input
+    is_disabled: 'No',             // Default string value for select input
   });
 
   const [message, setMessage] = useState('');
@@ -27,6 +31,7 @@ const Register = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      // Reset department if faculty changes
       ...(name === 'faculty' ? { department: '' } : {}),
     }));
   };
@@ -41,23 +46,34 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
     setMessage('Submitting...');
+
+    // Prepare data for backend, converting string booleans to actual booleans
+    const dataToSend = {
+      ...formData,
+      is_official: formData.is_official === 'Yes', // Convert 'Yes' to true, 'No' to false
+      is_disabled: formData.is_disabled === 'Yes', // Convert 'Yes' to true, 'No' to false
+    };
+
+    console.log('Form Data to Send:', dataToSend);
+
     try {
-      const res = await registerStudent(formData);
+      const res = await registerStudent(dataToSend); // Send the converted data
       setMessage('✅ Registered successfully!');
       console.log(res);
 
-      // ✅ Redirect to login after 2 seconds
+      // Redirect to login after 2 seconds
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       console.error(err);
-      setMessage(`❌ Error: ${err.message}`);
+      setMessage(`❌ Error: ${err.response?.data?.error || err.message}`); // More specific error message
     }
   };
 
   const genderOptions = ['Male', 'Female'];
   const levelOptions = ['100', '200', '300', '400', '500'];
+  const studentTypeOptions = ['undergraduate', 'postgraduate'];
+  const yesNoOptions = ['Yes', 'No']; // For is_official and is_disabled
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -69,6 +85,30 @@ const Register = () => {
         <SelectInput label="Department" name="department" value={formData.department} onChange={handleChange} options={departments} />
         <SelectInput label="Level" name="level" value={formData.level} onChange={handleChange} options={levelOptions} />
         <SelectInput label="Gender" name="gender" value={formData.gender} onChange={handleChange} options={genderOptions} />
+
+        {/* New fields */}
+        <SelectInput
+          label="Student Type"
+          name="student_type"
+          value={formData.student_type}
+          onChange={handleChange}
+          options={studentTypeOptions}
+        />
+        <SelectInput
+          label="Are you an official for an organization?"
+          name="is_official"
+          value={formData.is_official}
+          onChange={handleChange}
+          options={yesNoOptions}
+        />
+        <SelectInput
+          label="Are you disabled?"
+          name="is_disabled"
+          value={formData.is_disabled}
+          onChange={handleChange}
+          options={yesNoOptions}
+        />
+
         <TextInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} />
 
         <button

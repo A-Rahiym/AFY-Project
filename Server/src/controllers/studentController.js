@@ -21,7 +21,10 @@ export const registerStudent = async (req, res) => {
     faculty,
     level,
     gender,
-    password
+    password,
+    student_type,
+    is_official,
+    is_disabled
   } = req.body;
 
   try {
@@ -32,7 +35,10 @@ export const registerStudent = async (req, res) => {
       faculty,
       level,
       gender,
-      password
+      password,
+      student_type,
+      is_official,
+      is_disabled
     });
 
     const token = generateToken({ reg_number });
@@ -63,7 +69,7 @@ export const loginStudent = async (req, res) => {
     // Send the student data and token
     res.status(200).json({
       success: true,
-      student: { id: student.id, name: student.name, reg_number: student.reg_number, gender: student.gender, department: student.department, faculty: student.faculty, level: student.level, has_paid: student.has_paid, token: student.token },
+      student: { id: student.id, name: student.name, reg_number: student.reg_number, gender: student.gender, department: student.department, faculty: student.faculty, level: student.level, has_paid: student.has_paid, token: student.token, assigned_room_id: student.assigned_room_id, student_type: student.student_type, is_official: student.is_official, is_disabled: student.is_disabled},
       token,
     });
   } catch (error) {

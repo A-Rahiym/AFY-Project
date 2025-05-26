@@ -153,14 +153,11 @@ const HostelAndRoomBooking = () => {
     console.log("Selected Room ID:", e.target.value);
     console.log("Student ID:", studentId);
   };
-
-  // Event handler for the "Book Now" button submission.
   const handleBookNow = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     setMessage('Processing your booking...');
     setError(null); // Clear any previous errors
 
-    // Frontend pre-check: If student is already booked, prevent submission and show message.
     if (isStudentBooked) {
       setMessage('❌ You have already booked an accommodation.');
       return;
@@ -203,8 +200,6 @@ const HostelAndRoomBooking = () => {
     }
   };
 
-  // Render logic for initial loading of booking status.
-  // This ensures the UI shows a "checking status" message before rendering the form.
   if (checkingBookingStatus) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -240,7 +235,6 @@ const HostelAndRoomBooking = () => {
             onChange={handleHostelChange}
             className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
-            // Disable if student is already booked or if any loading is in progress
             disabled={isStudentBooked || loading}
           >
             <option value="">-- Choose a Hostel --</option>
@@ -258,9 +252,6 @@ const HostelAndRoomBooking = () => {
             Gender: {hostelDetails.gender}
           </p>
         )}
-
-        {/* Block Selection Dropdown (Conditional rendering) */}
-        {/* Renders only if a hostel is selected, its details are loaded, and it has blocks */}
         {selectedHostelName && hostelDetails && hostelDetails.hostel_block && hostelDetails.hostel_block.length > 0 && (
           <div>
             <label htmlFor="blockSelect" className="block text-lg font-medium text-gray-700 mb-2">
@@ -284,9 +275,6 @@ const HostelAndRoomBooking = () => {
             </select>
           </div>
         )}
-
-        {/* Room Selection Dropdown (Conditional rendering) */}
-        {/* Renders only if a block is selected, hostel details are loaded, and there are rooms in the block */}
         {selectedBlockId && hostelDetails && getRoomsForCurrentBlock().length > 0 && (
           <div>
             <label htmlFor="roomSelect" className="block text-lg font-medium text-gray-700 mb-2">
@@ -310,23 +298,14 @@ const HostelAndRoomBooking = () => {
             </select>
           </div>
         )}
-
-        {/* Book Now Button */}
         <button
           type="submit"
           className="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out"
-          // Button is disabled if:
-          // - No room is selected
-          // - Student ID or token is missing (not logged in)
-          // - Any loading is in progress (fetching details or booking)
-          // - Student is already booked
           disabled={!selectedRoomId || !studentId || loading || isStudentBooked}
         >
           {loading ? 'Processing...' : (isStudentBooked ? 'Already Booked' : 'Book Now')}
         </button>
       </form>
-
-      {/* Message Display (for success, loading, or specific errors) */}
       {message && (
         <p className={`mt-6 text-center text-lg font-semibold ${message.startsWith('❌') ? 'text-red-500' : 'text-green-500'}`}>
           {message}

@@ -1,6 +1,6 @@
 // models/studentModel.js
 import supabase from "../config/supabase.js";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
 export const createStudent = async (studentData) => {
   const {
@@ -11,6 +11,9 @@ export const createStudent = async (studentData) => {
     level,
     gender,
     password,
+    student_type,
+    is_official,
+    is_disabled,
   } = studentData;
 
   // Hash the password
@@ -18,16 +21,17 @@ export const createStudent = async (studentData) => {
 
   // Check if reg_number exists
   const { data: existing, error: findError } = await supabase
-    .from('students')
-    .select('*')
-    .eq('reg_number', reg_number);
+    .from("students")
+    .select("*")
+    .eq("reg_number", reg_number);
 
   if (findError) throw new Error(findError.message);
-  if (existing.length > 0) throw new Error('Registration number already exists');
+  if (existing.length > 0)
+    throw new Error("Registration number already exists");
 
   // Insert new student
   const { data, error } = await supabase
-    .from('students')
+    .from("students")
     .insert([
       {
         name,
@@ -37,16 +41,19 @@ export const createStudent = async (studentData) => {
         level,
         gender,
         password: hashedPassword,
-        has_paid: false,    // default
-        token: null         // no token yet
-      }
+        has_paid: false, // default
+        token: null, // no token yet
+        assigned_room_id: null,
+        student_type: student_type,
+        is_official: is_official,
+        is_disabled: is_disabled,
+      },
     ])
     .select();
 
   if (error) throw new Error(error.message);
   return data[0];
 };
-
 
 export const getStudentById = async (id) => {
   const { data, error } = await supabase
@@ -56,12 +63,11 @@ export const getStudentById = async (id) => {
     .single();
 
   if (error || !data) {
-    throw new Error('Unauthorized: Invalid ID');
+    throw new Error("Unauthorized: Invalid ID");
   }
 
   return data;
 };
-
 
 export const getStudentByRegNo = async (reg_number) => {
   try {
@@ -71,19 +77,21 @@ export const getStudentByRegNo = async (reg_number) => {
       .eq("reg_number", reg_number)
       .single(); // Fetch a single record
     if (error || !data) {
-      throw new Error('Student not found');
+      throw new Error("Student not found");
     }
     return data;
   } catch (error) {
-    throw new Error(error.message || 'An error occurred while fetching student data');
+    throw new Error(
+      error.message || "An error occurred while fetching student data"
+    );
   }
 };
 
 export const updateStudentToken = async (reg_number, token) => {
   const { error } = await supabase
-    .from('students')
-    .update({ token: token })  // update the `token` column
-    .eq('reg_number', reg_number);
+    .from("students")
+    .update({ token: token }) // update the `token` column
+    .eq("reg_number", reg_number);
 
   if (error) {
     throw new Error(error.message);
@@ -92,23 +100,20 @@ export const updateStudentToken = async (reg_number, token) => {
 
 export const markStudentAsPaid = async (reg_number) => {
   const { data, error } = await supabase
-    .from('students')
+    .from("students")
     .update({ has_paid: true })
-    .eq('reg_number', reg_number);
+    .eq("reg_number", reg_number);
 
   if (error) throw new Error(error.message);
   return data;
 };
 
-
-
 export const selectAccommodation = async (reg_number, hostel, block, room) => {
   const { data, error } = await supabase
-    .from('student_accommodations')
+    .from("student_accommodations")
     .insert([{ reg_number, hostel, block, room }])
     .select();
 
   if (error) throw new Error(error.message);
   return data[0];
 };
-
