@@ -105,7 +105,7 @@ export const createHostelBooking = async (roomId, studentId) => {
 export const checkExistingBooking = async (studentId) => {
   const { data: student, error } = await supabase
     .from('students')
-    .select('assigned_room_id')
+    .select('assigned_room_id,has_paid')
     .eq('id', studentId)
     .single(); // Expect a single student record
   if (error) {
@@ -114,8 +114,9 @@ export const checkExistingBooking = async (studentId) => {
   }
   // Determine if the student is booked based on whether assigned_room_id is not null
   const isBooked = student && student.assigned_room_id !== null;
+  const hasPaid = student ? student.has_paid : false;
   const assignedRoomId = student ? student.assigned_room_id : null;
-  return { isBooked, assignedRoomId };
+  return { isBooked, assignedRoomId  , hasPaid};
 };
 
 

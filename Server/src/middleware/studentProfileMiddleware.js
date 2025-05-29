@@ -27,5 +27,4 @@ const studentProfileMiddleware = (req, res, next) => {
     res.status(401).json({ error: 'Unauthorized: Invalid or expired token' });
   }
 };
-
 export default studentProfileMiddleware;

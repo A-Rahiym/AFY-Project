@@ -108,6 +108,8 @@ export const markStudentAsPaid = async (reg_number) => {
   return data;
 };
 
+
+
 export const selectAccommodation = async (reg_number, hostel, block, room) => {
   const { data, error } = await supabase
     .from("student_accommodations")
@@ -116,4 +118,28 @@ export const selectAccommodation = async (reg_number, hostel, block, room) => {
 
   if (error) throw new Error(error.message);
   return data[0];
+};
+
+export const updateStudentPayment = async (studentId, paidStatus) => {
+  if (typeof paidStatus !== 'boolean') {
+    throw new Error('paidStatus must be a boolean (true or false).');
+  }
+  const { data, error } = await supabase
+    .from('students')
+    .update({ has_paid: paidStatus })
+    .eq('id', studentId)
+    .select(); // Select the updated row to confirm the update
+
+  if (error) {
+    console.error(`Error updating payment status for student ${studentId}:`, error.message);
+    throw new Error(`Failed to update student payment status: ${error.message}`);
+  }
+
+  // Check if any row was actually updated (meaning the student ID existed)
+  if (!data || data.length === 0) {
+    throw new Error(`Student with ID ${studentId} not found or no changes were made.`);
+  }
+
+  console.log(`Student ${studentId} 'has_paid' status updated to: ${paidStatus}`);
+  return true; // Indicate success
 };

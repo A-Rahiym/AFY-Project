@@ -16,23 +16,27 @@ export const loginStudent = async (loginData) => {
 
 
 
-// Update payment status with token
-export const updatePaymentStatus = async (reg_number, data) => {
-  // const token = localStorage.getItem('token');
-  console.log(token);
-  const res = await axiosInstance.put(
-    `/students/payment-status/${reg_number}`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+export const updatePaymentStatus = async (studentId, paidStatus) => { // Changed parameter name
+
+    if (!token) {
+        throw new Error('Authentication token not found. Please log in.');
     }
-  );
+    if (typeof paidStatus !== 'boolean') {
+        throw new Error('paidStatus must be a boolean value.');
+    }
+    console.log(`Sending update for student ${studentId}: paidStatus = ${paidStatus}`); // Debugging
+    const res = await axiosInstance.put(
+        `/student/payment-status/${studentId}`, // Corrected URL to match backend route
+        { paidStatus }, // Corrected payload to match backend expectation
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
-  return res.data;
+    return res.data;
 };
-
 
 // Select accommodation with token
 export const selectAccommodation = async (formData, token) => {

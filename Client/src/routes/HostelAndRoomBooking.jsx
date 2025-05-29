@@ -47,6 +47,7 @@ const HostelAndRoomBooking = () => {
       try {
         // Call the checkBooking API function to verify if the student has a booking.
         const response = await checkBooking(studentId, token);
+        console.log("Response from checkBooking (frontend):", response);
         // Assuming your backend returns { isBooked: true/false, assignedRoomId: '...' }
         if (response.isBooked) {
           setIsStudentBooked(true);

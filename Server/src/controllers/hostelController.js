@@ -35,14 +35,14 @@ export const bookAccommodation = async (req, res) => {
 
   try {
     // ✅ Check if student has an existing booking
-    const existingBooking = await checkExistingBooking(student_id);
+    // const existingBooking = await checkExistingBooking(student_id);
 
-    if (existingBooking) {
-      return res.status(400).json({
-        success: false,
-        error: "Student has already booked a hostel.",
-      });
-    }
+    // if (existingBooking) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     error: "Student has already booked a hostel.",
+    //   });
+    // }
 
     const roomIsFull = await isRoomFull(room_id);
     if (roomIsFull) {
@@ -64,32 +64,56 @@ export const bookAccommodation = async (req, res) => {
 };
 
 
+// export const checkBookingStatus = async (req, res) => {
+//   const { student_id } = req.params;
+
+//   if (!student_id) {
+//     return res.status(400).json({ success: false, error: 'Student ID is required.' });
+//   }
+//   try {
+//     const booking = await getStudentBooking(student_id);
+
+//     if (!booking) {
+//       return res.status(200).json({
+//         success: true,
+//         booked: false,
+//         message: 'You have not booked any room yet.'
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       booked: true,
+//       booking: booking,
+//       message: 'You have already booked a room.'
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
+
+
 export const checkBookingStatus = async (req, res) => {
-  const { student_id } = req.params;
+    const { student_id } = req.params;
 
-  if (!student_id) {
-    return res.status(400).json({ success: false, error: 'Student ID is required.' });
-  }
-
-  try {
-    const booking = await getStudentBooking(student_id);
-
-    if (!booking) {
-      return res.status(200).json({
-        success: true,
-        booked: false,
-        message: 'You have not booked any room yet.'
-      });
+    if (!student_id) {
+        return res.status(400).json({ success: false, error: 'Student ID is required.' });
     }
 
-    res.status(200).json({
-      success: true,
-      booked: true,
-      booking: booking,
-      message: 'You have already booked a room.'
-    });
+    try {
+        // Use the comprehensive checkExistingBooking from studentModel.js
+        const { isBooked, assignedRoomId, hasPaid} = await checkExistingBooking(student_id);
+        // Return all relevant status flags to the frontend
+        res.status(200).json({
+            success: true,
+            isBooked: isBooked,         // Whether a room is assigned
+            assignedRoomId: assignedRoomId, // The ID of the assigned room, if any
+            hasPaid: hasPaid,           // Whether school fees are paid
+        });
 
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+    } catch (error) {
+        console.error('Error in checkBookingStatusController:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
 };

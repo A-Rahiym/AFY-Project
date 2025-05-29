@@ -27,7 +27,6 @@ const AppContent = () => {
         <Route path="/payment-status" element={<PaymentStatus />} />
         <Route path="/profile" element={<ViewProfile />} />
         <Route path="/book-room" element={<HostelAndRoomBooking/>} />
-        <Route path="/select-accommodation" element={<AccommodationSelection />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>
