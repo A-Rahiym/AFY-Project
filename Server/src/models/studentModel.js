@@ -100,6 +100,35 @@ export const updateStudentToken = async (reg_number, token) => {
   }
 };
 
+
+export const getStudentDetails = async (studentId) => {
+    const { data, error } = await supabase
+        .from('students')
+        .select(`
+            id,
+            gender,
+            has_paid,
+            fcfs_id,
+            assigned_room_id,
+            choice1_hostel_id,
+            choice2_hostel_id,
+            choice3_hostel_id
+        `)
+        .eq('id', studentId)
+        .single();
+
+    if (error) {
+        console.error(`Error fetching student ${studentId}:`, error.message);
+        throw new Error(`Failed to retrieve student details: ${error.message}`);
+    }
+    if (!data) {
+        throw new Error(`Student with ID ${studentId} not found.`);
+    }
+    return data;
+};
+
+
+
 export const markStudentAsPaid = async (reg_number) => {
   const { data, error } = await supabase
     .from("students")
@@ -186,4 +215,28 @@ export const updateStudentPayment = async (studentId, paidStatus) => {
     // If a new FCFS ID was assigned, it's now in the database.
     // The `data` object returned will contain the updated `fcfs_id`.
     return data[0]; // Return the updated student record
+};
+
+
+
+export const updateStudentHostelChoices = async (studentId, choice1Id, choice2Id, choice3Id) => {
+    const { data, error } = await supabase
+        .from('students')
+        .update({
+            choice1_hostel_id: choice1Id || null,
+            choice2_hostel_id: choice2Id || null,
+            choice3_hostel_id: choice3Id || null,
+        })
+        .eq('id', studentId)
+        .select();
+
+    if (error) {
+        console.error(`Error updating choices for student ${studentId}:`, error.message);
+        throw new Error(`Failed to save hostel choices: ${error.message}`);
+    }
+    if (!data || data.length === 0) {
+        throw new Error(`Student with ID ${studentId} not found or no changes made to choices.`);
+    }
+    console.log(`Student ${studentId} choices updated.`);
+    return data[0];
 };

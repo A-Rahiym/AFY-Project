@@ -3,7 +3,7 @@ import express from 'express';
 import {
   registerStudent,
   loginStudent,
-  // assignToken,
+  submitHostelChoices,
   getProfile,
   updatePaymentStatus,
   handleAccommodationSelection
@@ -23,4 +23,6 @@ studentRouter.put('/payment-status/:student_id',authMiddleware, updatePaymentSta
 studentRouter.post('/select-accommodation', accommodationAuthMiddleware, handleAccommodationSelection);
 // Get student profile
 studentRouter.get('/profile', studentProfileMiddleware, getProfile);
+
+studentRouter.post('/submit-hostel-choices', submitHostelChoices);
 export default studentRouter;

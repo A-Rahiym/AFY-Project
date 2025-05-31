@@ -2,11 +2,11 @@
 import {
   createStudent,
   getStudentById,
-  updateStudentToken,
   markStudentAsPaid,
-  // getStudentByToken,
+  getStudentDetails,
   updateStudentPayment,
   getStudentByRegNo,
+  updateStudentHostelChoices,
   selectAccommodation
 } from '../models/studentModel.js';
 
@@ -167,4 +167,57 @@ export const updatePaymentStatus = async (req, res) => {
         console.error('Error updating student payment status:', error.message);
         res.status(500).json({ success: false, error: error.message });
     }
+};
+
+export const submitHostelChoices = async (req, res) => {
+    // --- CHANGE IS HERE ---
+    // Get student ID directly from the request body
+    const { studentId, choice1Id, choice2Id, choice3Id } = req.body;
+    // --- END CHANGE ---
+    // Basic validation: Check if studentId and at least one choice are provided
+    if (!studentId) {
+        return res.status(400).json({ success: false, error: 'studentId is required in the request body.' });
+    }
+    if (!choice1Id && !choice2Id && !choice3Id) {
+        return res.status(400).json({
+            success: false,
+            error: 'At least one hostel choice (choice1Id, choice2Id, or choice3Id) must be provided.'
+        });
+    }
+
+    try {
+        // Step 1: Perform eligibility checks
+        const student = await getStudentDetails(studentId); // Use studentId from body
+
+        if (!student) {
+            return res.status(404).json({ success: false, error: `Student with ID ${studentId} not found.` });
+        }
+        if (!student.has_paid || student.fcfs_id === null) {
+            return res.status(403).json({
+                success: false,
+                error: 'You are not eligible to submit hostel choices. Please ensure your school fees are paid and FCFS ID is assigned.'
+            });
+        }
+        if (student.assigned_room_id !== null) {
+            return res.status(409).json({
+                success: false,
+                error: 'You have already been assigned a room. You cannot submit new choices.'
+            });
+        }
+
+        // Step 2: Store the student's choices using the model function
+        await updateStudentHostelChoices(studentId, choice1Id, choice2Id, choice3Id);
+
+        // Step 3: Respond to the client
+        return res.status(200).json({
+            success: true,
+            message: "Your hostel choices have been saved successfully. Please await automated assignment."
+        });
+
+    } catch (error) {
+        console.error('Error in submitHostelChoicesController:', error.message);
+        res.status(500).json({ success: false, error: 'Failed to process hostel choices. ' + error.message });
+    }
+
+
 };
