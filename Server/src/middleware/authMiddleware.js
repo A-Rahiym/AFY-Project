@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.student = decoded; // Save the payload to request
+    // req.student = decoded; // Save the payload to request
     next();
   } catch (err) {
     return res.status(401).json({ success: false, error: 'Invalid token' });

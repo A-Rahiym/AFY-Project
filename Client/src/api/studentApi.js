@@ -17,7 +17,6 @@ export const loginStudent = async (loginData) => {
 
 
 export const updatePaymentStatus = async (studentId, paidStatus) => { // Changed parameter name
-
     if (!token) {
         throw new Error('Authentication token not found. Please log in.');
     }
@@ -62,7 +61,30 @@ export const getStudentProfile = async (id, token) => {
   return res.data;
 };
 
-
+/**
+ * Submits a student's hostel choices to the backend.
+ * This function expects the studentId to be part of the URL path as a parameter.
+ * @param {string} studentId - The UUID of the student (passed in URL).
+ * @param {object} choices - An object containing choice1Id, choice2Id, choice3Id (passed in request body).
+ * @returns {Promise<object>} The response data from the backend.
+ * @throws {Error} If the API call fails.
+ */
+export const submitHostelChoices = async (studentId, choices) => {
+  // The URL matches the backend route POST /api/students/:studentId/submit-choices
+  // As per our previous discussions, studentId is in the URL path,
+  // and the choices object ({ choice1Id, choice2Id, choice3Id }) is in the request body.
+  const res = await axiosInstance.post(
+    `/students/${studentId}/submit-choices`, // Endpoint to which the choices are sent
+    choices, // The body of the request containing the choices
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Bearer ${token}`, // <-- UNCOMMENT THIS IF YOU RE-INTRODUCE 'protect' MIDDLEWARE
+      },
+    }
+  );
+  return res.data;
+};
 
 
 

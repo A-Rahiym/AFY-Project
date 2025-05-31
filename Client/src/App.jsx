@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './routes/Dashboard';
 import AccommodationPayment from './routes/AccomodationPayment';
 import HostelAndRoomBooking from './routes/HostelAndRoomBooking';
-
+import HostelChoicePage from './routes/HostelChoicePage';
 const AppContent = () => {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,6 +28,7 @@ const AppContent = () => {
         <Route path="/profile" element={<ViewProfile />} />
         <Route path="/book-room" element={<HostelAndRoomBooking/>} />
         <Route path="/accommodation-payment" element={<AccommodationPayment />} />
+         <Route path="/choose-hostel" element={<HostelChoicePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>

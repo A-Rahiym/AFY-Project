@@ -24,5 +24,5 @@ studentRouter.post('/select-accommodation', accommodationAuthMiddleware, handleA
 // Get student profile
 studentRouter.get('/profile', studentProfileMiddleware, getProfile);
 
-studentRouter.post('/submit-hostel-choices', submitHostelChoices);
+studentRouter.post('/:studentId/submit-choices', submitHostelChoices);
 export default studentRouter;

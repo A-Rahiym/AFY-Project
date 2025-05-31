@@ -172,7 +172,8 @@ export const updatePaymentStatus = async (req, res) => {
 export const submitHostelChoices = async (req, res) => {
     // --- CHANGE IS HERE ---
     // Get student ID directly from the request body
-    const { studentId, choice1Id, choice2Id, choice3Id } = req.body;
+    const { studentId } = req.params;
+    const { choice1Id, choice2Id, choice3Id } = req.body;
     // --- END CHANGE ---
     // Basic validation: Check if studentId and at least one choice are provided
     if (!studentId) {

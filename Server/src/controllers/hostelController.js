@@ -3,6 +3,7 @@ import {
   createHostelBooking,
   checkExistingBooking,
   isRoomFull,
+  getAllHostels,
   getStudentBooking
 } from "../models/hostelModel.js";
 
@@ -22,6 +23,8 @@ export const getHostelsController = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
 
 
 export const bookAccommodation = async (req, res) => {
@@ -61,6 +64,17 @@ export const bookAccommodation = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
+};
+
+
+export const getAllHostelsController = async (req, res) => {
+    try {
+        const hostels = await getAllHostels();
+        res.status(200).json({ success: true, hostels });
+    } catch (error) {
+        console.error('Error in getAllHostelsController:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
 };
 
 
