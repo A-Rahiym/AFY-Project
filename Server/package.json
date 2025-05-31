@@ -19,7 +19,8 @@
     "express": "^5.1.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
-    "npm": "^11.4.0"
+    "npm": "^11.4.0",
+    "ulid": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

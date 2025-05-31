@@ -1,6 +1,8 @@
 // models/studentModel.js
 import supabase from "../config/supabase.js";
 import bcrypt from "bcryptjs";
+import {ulid} from "ulid";
+
 
 export const createStudent = async (studentData) => {
   const {
@@ -120,26 +122,68 @@ export const selectAccommodation = async (reg_number, hostel, block, room) => {
   return data[0];
 };
 
+
+// --- Function to generate a new FCFS ID using ULID ---
+// This replaces the previous getNextFcfsId() which was prone to race conditions
+// and was a simple integer.
+function generateFcfsId() {
+    return ulid(); // Generates a new ULID string
+}
+
 export const updateStudentPayment = async (studentId, paidStatus) => {
-  if (typeof paidStatus !== 'boolean') {
-    throw new Error('paidStatus must be a boolean (true or false).');
-  }
-  const { data, error } = await supabase
-    .from('students')
-    .update({ has_paid: paidStatus })
-    .eq('id', studentId)
-    .select(); // Select the updated row to confirm the update
+    if (typeof paidStatus !== 'boolean') {
+        throw new Error('paidStatus must be a boolean (true or false).');
+    }
 
-  if (error) {
-    console.error(`Error updating payment status for student ${studentId}:`, error.message);
-    throw new Error(`Failed to update student payment status: ${error.message}`);
-  }
+    let updateData = { has_paid: paidStatus };
 
-  // Check if any row was actually updated (meaning the student ID existed)
-  if (!data || data.length === 0) {
-    throw new Error(`Student with ID ${studentId} not found or no changes were made.`);
-  }
+    // Conditionally assign FCFS ID if paidStatus is true
+    if (paidStatus) {
+        // Check if student already has an FCFS ID to prevent re-assignment
+        // and unnecessary ULID generation/DB update if already present.
+        const { data: currentStudent, error: fetchError } = await supabase
+            .from('students')
+            .select('fcfs_id')
+            .eq('id', studentId)
+            .single();
 
-  console.log(`Student ${studentId} 'has_paid' status updated to: ${paidStatus}`);
-  return true; // Indicate success
+        if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 means 'No rows found' (expected if new student)
+            console.error(`Error fetching student ${studentId} for FCFS check:`, fetchError.message);
+            throw new Error(`Failed to retrieve student for FCFS check: ${fetchError.message}`);
+        }
+
+        if (currentStudent && currentStudent.fcfs_id !== null) {
+            // Student already has an FCFS ID, log and proceed without generating a new one
+            console.log(`Student ${studentId} already has FCFS ID: ${currentStudent.fcfs_id}. Not assigning a new one.`);
+        } else {
+            // Student does not have an FCFS ID, generate and assign a new one
+            const newFcfsId = generateFcfsId();
+            updateData.fcfs_id = newFcfsId;
+            console.log(`Assigning new FCFS ID ${newFcfsId} to student ${studentId}`);
+        }
+    } else {
+        // If setting to false, explicitly set fcfs_id to null
+        updateData.fcfs_id = null;
+    }
+
+    const { data, error } = await supabase
+        .from('students')
+        .update(updateData)
+        .eq('id', studentId)
+        .select(); // Select the updated row to confirm the update
+
+    if (error) {
+        console.error(`Error updating payment status for student ${studentId}:`, error.message);
+        throw new Error(`Failed to update student payment status: ${error.message}`);
+    }
+
+    // Check if any row was actually updated
+    if (!data || data.length === 0) {
+        throw new Error(`Student with ID ${studentId} not found or no changes were made.`);
+    }
+
+    console.log(`Student ${studentId} 'has_paid' status updated to: ${paidStatus}.`);
+    // If a new FCFS ID was assigned, it's now in the database.
+    // The `data` object returned will contain the updated `fcfs_id`.
+    return data[0]; // Return the updated student record
 };

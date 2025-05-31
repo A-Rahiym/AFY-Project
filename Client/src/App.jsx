@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Register from './routes/Register';
 import Login from './routes/Login';
 import PaymentStatus from './routes/PaymentStatus';
-import AccommodationSelection from './routes/AccomodationSelection';
 import ViewProfile from './routes/Profile';
 import Navbar from './components/Navbar';
 import Dashboard from './routes/Dashboard';
+import AccommodationPayment from './routes/AccomodationPayment';
 import HostelAndRoomBooking from './routes/HostelAndRoomBooking';
 
 const AppContent = () => {
@@ -27,6 +27,7 @@ const AppContent = () => {
         <Route path="/payment-status" element={<PaymentStatus />} />
         <Route path="/profile" element={<ViewProfile />} />
         <Route path="/book-room" element={<HostelAndRoomBooking/>} />
+        <Route path="/accommodation-payment" element={<AccommodationPayment />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>

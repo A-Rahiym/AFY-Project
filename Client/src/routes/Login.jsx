@@ -21,7 +21,7 @@ const Login = () => {
         console.log("Login successful:", res);
         setMessage("✅ Login successful!");
         // console.log(res.student.id)
-        navigate("/dashboard"); // ✅ Redirect
+        navigate("/payment-status"); // ✅ Redirect
       } else {
         setMessage("❌ Login failed. Please check your credentials.");
       }
