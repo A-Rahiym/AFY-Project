@@ -74,7 +74,7 @@ export const submitHostelChoices = async (studentId, choices) => {
   // As per our previous discussions, studentId is in the URL path,
   // and the choices object ({ choice1Id, choice2Id, choice3Id }) is in the request body.
   const res = await axiosInstance.post(
-    `/students/${studentId}/submit-choices`, // Endpoint to which the choices are sent
+    `/student/${studentId}/submit-choices`, // Endpoint to which the choices are sent
     choices, // The body of the request containing the choices
     {
       headers: {

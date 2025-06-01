@@ -169,10 +169,9 @@ export const getStudentBooking = async (studentId) => {
 export const getAllHostels = async () => {
     const { data, error } = await supabase
         .from('hostel')
-        .select('id, name'); // Select only ID, Name, and Gender
+        .select('id, name, gender'); // Select only ID, Name, and Gender
                                            // Gender is useful for the frontend to filter
                                            // or display to the user.
-
     if (error) {
         console.error("Error fetching all hostels:", error.message);
         throw new Error(`Failed to retrieve all hostels: ${error.message}`);

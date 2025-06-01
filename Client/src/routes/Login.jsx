@@ -18,6 +18,7 @@ const Login = () => {
       if (res?.token) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("studentId", res.student.id);
+        localStorage.setItem("studentGender", res.student.gender);
         console.log("Login successful:", res);
         setMessage("✅ Login successful!");
         // console.log(res.student.id)

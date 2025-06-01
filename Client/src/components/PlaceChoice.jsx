@@ -11,10 +11,11 @@ const PlaceChoice = ({ studentId, onChoicesSubmitted, setGlobalError, setGlobalM
   const [loading, setLoading] = useState(true); // Initial loading for hostel options
   const [submitting, setSubmitting] = useState(false); // For form submission
   const [message, setMessage] = useState(''); // Local message for this component
-
+  
   // Effect to fetch all hostel options for the dropdowns
   useEffect(() => {
     const fetchHostels = async () => {
+      const gender = localStorage.getItem('studentGender');
       setLoading(true);
       setMessage('');
       setGlobalError(null); // Clear any global errors from parent page
@@ -27,7 +28,7 @@ const PlaceChoice = ({ studentId, onChoicesSubmitted, setGlobalError, setGlobalM
         // Ensure response structure matches: { success: true, hostels: [...] }
         if (response.success && Array.isArray(response.hostels)) {
           // Filter out any hostels that might be missing critical data for dropdowns
-          const validHostels = response.hostels.filter(h => h.id && h.name);
+          const validHostels = response.hostels.filter(h => h.gender === "Male" );;
           setHostelOptions(validHostels);
           setMessage('Please select your top 3 hostel choices.');
         } else {
@@ -65,6 +66,7 @@ const PlaceChoice = ({ studentId, onChoicesSubmitted, setGlobalError, setGlobalM
         choice2Id: choice2Id || null,
         choice3Id: choice3Id || null,
       };
+      console.log("Submitting choices:", choices);
 
       // Assuming studentId is passed correctly as a prop from HostelChoicePage (its parent)
       const response = await submitHostelChoices(studentId, choices);

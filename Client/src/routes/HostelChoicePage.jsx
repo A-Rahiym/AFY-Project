@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // No longer using useParams
 import PlaceChoice from '../components/PlaceChoice'; // Your self-contained PlaceChoice component
 import { getStudentProfile } from '../api/studentApi'; // To get student details (to check choices)
-import { checkBooking } from '../api/hostelApi'; // To check if student is already booked
+// import { checkBooking } from '../api/hostelApi'; // To check if student is already booked
 
 const HostelChoicePage = () => {
   const navigate = useNavigate();
@@ -38,26 +38,26 @@ const HostelChoicePage = () => {
       try {
         // --- 2. Check if student has already been assigned a hostel ---
         // This is a useful check to avoid showing the choice form if already assigned
-        const bookingStatus = await checkBooking(studentId, token);
-        if (bookingStatus.booked) {
-          setMessage('You have already been assigned accommodation. Redirecting to your status page...');
-          setTimeout(() => navigate('/hostel-status'), 2000);
-          return; // Stop further checks and wait for redirect
-        }
-
-        // // --- 3. Check if student has already submitted hostel choices ---
-        // // This is crucial to prevent re-submission of choices
-        // const studentProfile = await getStudentProfile(studentId, token);
-        // if (studentProfile.choice1_hostel_id || studentProfile.choice2_hostel_id || studentProfile.choice3_hostel_id) {
-        //   setMessage('Your hostel choices have already been submitted. Redirecting to your status page...');
-        //   setTimeout(() => navigate('/hostel-status'), 2000);
+        // const bookingStatus = await checkBooking(studentId, token);
+        // if (bookingStatus.booked) {
+        //   setMessage('You have already been assigned accommodation. Redirecting to your status page...');
+        //   setTimeout(() => navigate('/accommodation-payment'), 10000);
         //   return; // Stop further checks and wait for redirect
         // }
+
+
+        // --- 3. Check if student has already submitted hostel choices ---
+        // This is crucial to prevent re-submission of choices
+        const studentProfile = await getStudentProfile(studentId, token);
+        if (studentProfile.choice1_hostel_id || studentProfile.choice2_hostel_id || studentProfile.choice3_hostel_id) {
+          setMessage('Your hostel choices have already been submitted. Redirecting to your status page...');
+          setTimeout(() => navigate('/accommodation-payment'), 2000);
+          return; // Stop further checks and wait for redirect
+        }
 
         // If none of the above conditions met, student is eligible to make choices
         setShouldRenderPlaceChoice(true);
         setMessage('Please select your top 3 hostel choices.');
-
       } catch (err) {
         console.error("Error during initial page checks:", err);
         const errorMessage = err.response?.data?.error || "Failed to load page. Please try again.";
@@ -77,7 +77,7 @@ const HostelChoicePage = () => {
   // Callback after choices are successfully submitted from PlaceChoice component
   const handleChoicesSubmitted = () => {
     setMessage('✅ Your hostel choices have been submitted successfully! Redirecting...');
-    setTimeout(() => navigate('/hostel-status'), 2000); // Redirect to status page after submission
+    setTimeout(() => navigate('/accommodation-payment'), 2000); // Redirect to status page after submission
   };
 
   // --- Render Logic for the Page ---
