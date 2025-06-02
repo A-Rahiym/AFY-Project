@@ -38,12 +38,12 @@ const HostelAndRoomBooking = () => {
   // Check booking status on mount
   useEffect(() => {
     const fetchBookingStatus = async () => {
-      if (!studentId || !token) {
-        setIsStudentBooked(false);
-        setCheckingBookingStatus(false);
-        setMessage("Please log in to book accommodation.");
-        return;
-      }
+      // if (!studentId || !token) {
+      //   setIsStudentBooked(false);
+      //   setCheckingBookingStatus(false);
+      //   setMessage("Please log in to book accommodation.");
+      //   return;
+      // }
 
       setCheckingBookingStatus(true);
       try {

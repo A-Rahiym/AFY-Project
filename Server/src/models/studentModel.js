@@ -11,6 +11,7 @@ export const createStudent = async (studentData) => {
     department,
     faculty,
     level,
+    campus,
     gender,
     password,
     student_type,
@@ -42,6 +43,7 @@ export const createStudent = async (studentData) => {
         faculty,
         level,
         gender,
+        campus,
         password: hashedPassword,
         has_paid: false, // default
         token: null, // no token yet

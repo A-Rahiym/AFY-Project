@@ -9,6 +9,8 @@ import Dashboard from './routes/Dashboard';
 import AccommodationPayment from './routes/AccomodationPayment';
 import HostelAndRoomBooking from './routes/HostelAndRoomBooking';
 import HostelChoicePage from './routes/HostelChoicePage';
+import { AuthProvider } from './Context/AuthContext';
+
 const AppContent = () => {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,9 +36,12 @@ const AppContent = () => {
     </div>
   );
 };
+
 const App = () => (
   <Router>
+    <AuthProvider>
     <AppContent />
+    </AuthProvider>
   </Router>
 );
 

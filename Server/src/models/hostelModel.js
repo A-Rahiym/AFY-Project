@@ -166,15 +166,66 @@ export const getStudentBooking = async (studentId) => {
   return data; // could be null if not found
 };
 
-export const getAllHostels = async () => {
+
+export const getAllHostels = async (gender, campus) => {
+    // Since parameters are always provided, we can directly apply the filters.
     const { data, error } = await supabase
         .from('hostel')
-        .select('id, name, gender'); // Select only ID, Name, and Gender
-                                           // Gender is useful for the frontend to filter
-                                           // or display to the user.
+        .select('id, name, gender, campus') // Select relevant columns
+        .eq('gender', gender)               // Filter directly by required gender
+        .eq('campus', campus)               // Filter directly by required campus
     if (error) {
         console.error("Error fetching all hostels:", error.message);
         throw new Error(`Failed to retrieve all hostels: ${error.message}`);
     }
-    return data;
+    return data || [];
+};
+
+
+
+export const getAvailableRoomsInHostel = async (hostelId) => {
+    try {
+        const { data, error } = await supabase
+            .from('hostel_block_room')
+            .select(`
+                id,
+                name,            
+                max_capacity,
+                hostel_block_id,
+                hostel_block!inner( 
+                    id,
+                    name,         
+                    hostel!inner( 
+                        id,
+                        name,    
+                        gender    
+                    )
+                )
+            `)
+            .eq('hostel_block.hostel.id', hostelId)
+            .order('name', { ascending: true }); // Secondary sort by room name/number
+
+        if (error) {
+            console.error(`Error fetching available rooms for hostel ${hostelId} (gender ${studentGender}):`, error.message);
+            throw new Error(`Failed to retrieve available rooms: ${error.message}`);
+        }
+
+        // Map the data to a flatter structure for easier consumption in the frontend
+        // This removes the nested 'hostel_block' and 'hostel' objects,
+        // but keeps relevant IDs/names if you need them in the final list.
+        return data.map(row => ({
+            id: row.id,
+            room_name: row.name, // The name of the room itself (e.g., "101")
+            capacity: row.max_capacity,
+            block_id: row.hostel_block.id,
+            block_name: row.hostel_block.name,
+            hostel_id: row.hostel_block.hostel.id, // This will match your input hostelId
+            hostel_name: row.hostel_block.hostel.name,
+            hostel_gender: row.hostel_block.hostel.gender
+        }));
+
+    } catch (error) {
+        // Re-throw the error so the calling controller can catch and respond
+        throw error;
+    }
 };

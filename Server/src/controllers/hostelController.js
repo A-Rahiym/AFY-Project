@@ -4,7 +4,8 @@ import {
   checkExistingBooking,
   isRoomFull,
   getAllHostels,
-  getStudentBooking
+  getStudentBooking,
+  getAvailableRoomsInHostel
 } from "../models/hostelModel.js";
 
 export const getHostelsController = async (req, res) => {
@@ -68,8 +69,11 @@ export const bookAccommodation = async (req, res) => {
 
 
 export const getAllHostelsController = async (req, res) => {
+    // Extract optional filters from query parameters
+    const { gender, campus } = req.query; // req.query is used for filtering parameters
+
     try {
-        const hostels = await getAllHostels();
+        const hostels = await getAllHostels(gender, campus); // Pass parameters to the model function
         res.status(200).json({ success: true, hostels });
     } catch (error) {
         console.error('Error in getAllHostelsController:', error.message);
@@ -131,3 +135,14 @@ export const checkBookingStatus = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
+
+export const getAvailableHostelRooms = async (req,res) => {
+    const { hostelId } = req.params;
+    try {
+        const hostels = await getAvailableRoomsInHostel(hostelId);
+        res.status(200).json({ success: true, hostels });
+    } catch (error) {
+        console.error('Error in getAllHostelsController:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
+}

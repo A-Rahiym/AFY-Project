@@ -2,21 +2,26 @@ import axiosInstance from "./axiosInstance";
 
 
 
-export const getHostelDetails = async (param) => {
+export const getHostelDetails = async (gender, campus) => {
   try {
-    let res;
-    if (param === 'all') {
-      res = await axiosInstance.get('/hostels/'); // Call the new /api/hostels/ endpoint
-    } else {
-      res = await axiosInstance.get(`/hostels/${param}`); // Call the existing /api/hostels/:name endpoint
-    }
-    return res.data;
+    // Construct the URL with query parameters for gender and campus
+    // Example: /api/hostels?gender=FEMALE&campus=Main
+    const res = await axiosInstance.get(`/hostels`, {
+      params: {
+        gender: gender,
+        campus: campus,
+      },
+    });
+    return res.data; // axios puts the response data in res.data
   } catch (error) {
-    console.error(`Error fetching hostel details for param "${param}":`, error.response?.data || error.message);
+    console.error(
+      `Error fetching hostel details for gender "${gender}" and campus "${campus}":`,
+      error.response?.data || error.message
+    );
+    // Re-throw the error so the calling component can handle it
     throw error;
   }
 };
-
 
 export const checkBooking = async (studentId, token) => {
   const res = await axiosInstance.get(`/hostels/booking-status/${studentId}`, {
