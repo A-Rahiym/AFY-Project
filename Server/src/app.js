@@ -2,6 +2,7 @@
 import express from 'express';
 import studentRoutes from './routes/studentRoutes.js';
 import hostelRoutes from './routes/hostelRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import cors from 'cors';
 // import authRoutes from './routes/authRoutes.js';
 // Import other route files as needed
@@ -24,6 +25,9 @@ app.use(express.json());
 app.use('/api/student', studentRoutes);
 app.use(express.json());
 app.use('/api/hostels', hostelRoutes);
+app.use(express.json());
+app.use('/api/admin', adminRoutes);
+
 // Register routes
 // app.use('/api/auth', authRoutes);
 // app.use('/api/students', studentRoutes);

@@ -49,17 +49,16 @@ const HostelChoicePage = () => {
             try {
                 // Fetch student profile first to check for already submitted choices.
                 const studentProfile = await getStudentProfile(studentId, token);
-
                 // --- NEW/RE-ENABLED CHECK: Payment Status and Booking Status ---
                 const status = await checkBooking(studentId, token); // Assuming this checks both payment & booking status
-
+                
                 // Check if student has paid fees
-                if (!status.hasPaid) {
-                    setMessage('You have not completed your payment. Please complete payment to proceed.');
-                    setTimeout(() => navigate('/accommodation-payment'), 3000); // Redirect to payment page
-                    setLoadingInitialChecks(false);
-                    return;
-                }
+                // if (!status.hasPaid) {
+                //     setMessage('You have not completed your payment. Please complete payment to proceed.');
+                //     setTimeout(() => navigate('/accommodation-payment'), 3000); // Redirect to payment page
+                //     setLoadingInitialChecks(false);
+                //     return;
+                // }
 
                 // Check if student is already booked/assigned accommodation
                 if (status.isBooked || status.booked) { // Adjust property name as per your API
@@ -188,7 +187,6 @@ const HostelChoicePage = () => {
                 onChoicesSubmitted={handleChoicesSubmitted}
                 setGlobalError={setError}      // Pass setError from parent
                 setGlobalMessage={setMessage}  // Pass setMessage from parent
-                // Pass hostel options and their loading/error states
                 hostelOptions={hostelOptions}
                 loadingHostelOptions={loadingHostelOptions}
                 hostelOptionsError={hostelOptionsError}

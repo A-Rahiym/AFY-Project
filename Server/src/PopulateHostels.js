@@ -226,14 +226,14 @@ async function populateHostelData() {
         max_capacity: room.max_capacity
       }));
 
-      console.log(`    Inserting ${roomsToInsert.length} rooms for block ${blockData.name}...`);
+      console.log(`Inserting ${roomsToInsert.length} rooms for block ${blockData.name}...`);
       const { data: insertedRooms, error: roomsError } = await supabase
         .from('hostel_block_room') // Table name is 'hostel_block_room'
         .insert(roomsToInsert)
         .select();
 
       if (roomsError) {
-        console.error(`    Error inserting rooms for block ${blockData.name}:`, roomsError.message);
+        console.error(`Error inserting rooms for block ${blockData.name}:`, roomsError.message);
       } else {
         console.log(`    ${insertedRooms.length} rooms inserted for block ${blockData.name}.`);
       }

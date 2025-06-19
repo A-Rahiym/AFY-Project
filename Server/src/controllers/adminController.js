@@ -1,0 +1,59 @@
+// src/controllers/adminController.js
+import { assignRoomToStudentByChoices } from '../services/adminAssignmentService.js'; // Make sure this path is correct
+
+/**
+ * Controller for an administrator to assign a room to a student based on their choices.
+ * Expects { studentId: string } in req.body.
+ * This function orchestrates the call to assignRoomToStudentByChoices service.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
+export const assignRoomToStudentController = async (req, res) => {
+    const { studentId } = req.body;
+    
+    // --- Input Validation ---
+    if (!studentId) {
+        return res.status(400).json({ success: false, error: 'Student ID is required in the request body.' });
+    }
+    // --- Authentication and Authorization (Highly Recommended for Admin Endpoints) ---
+    // You would typically have middleware here to ensure only authenticated
+    // administrators can call this endpoint. Example:
+    /*
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ success: false, error: 'Forbidden: Only administrators can assign rooms.' });
+    }
+    // Assume req.user is populated by your authentication middleware
+    */
+    try {
+        // Call the service function to perform the assignment logic
+        const assignmentResult = await assignRoomToStudentByChoices(studentId);
+        if (assignmentResult) {
+            // If assignmentResult is not null, a room was successfully assigned
+            return res.status(200).json({
+                success: true,
+                message: assignmentResult.message || `Room assigned successfully to student ${studentId}.`,
+                data: assignmentResult // Contains assignedRoomId, assignedRoomName, bookingId, etc.
+            });
+        } else {
+            // If assignmentResult is null, no room could be assigned after trying all choices
+            return res.status(404).json({
+                success: false,
+                error: `Could not find an available room for student ${studentId} based on their choices, or student is already assigned.`
+            });
+        }
+    } catch (error) {
+        console.error('Error in assignRoomToStudentController:', error.message);
+        // --- Error Handling for specific scenarios ---
+        if (error.message.includes('Student with ID') && error.message.includes('not found')) {
+            return res.status(404).json({ success: false, error: error.message });
+        }
+        if (error.message.includes('already assigned')) {
+            return res.status(409).json({ success: false, error: error.message });
+        }
+        if (error.message.includes('no hostel choices')) {
+            return res.status(400).json({ success: false, error: error.message });
+        }
+        // Generic server error
+        return res.status(500).json({ success: false, error: 'Failed to assign room due to a server error.' });
+    }
+};
