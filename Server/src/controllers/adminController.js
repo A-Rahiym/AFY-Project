@@ -1,5 +1,5 @@
 // src/controllers/adminController.js
-import { assignRoomToStudentByChoices } from '../services/adminAssignmentService.js'; // Make sure this path is correct
+import { assignRoomToStudentByChoices , batchAssignRoomsToStudents } from '../services/adminAssignmentService.js'; // Make sure this path is correct
 
 /**
  * Controller for an administrator to assign a room to a student based on their choices.
@@ -55,5 +55,41 @@ export const assignRoomToStudentController = async (req, res) => {
         }
         // Generic server error
         return res.status(500).json({ success: false, error: 'Failed to assign room due to a server error.' });
+    }
+};
+
+
+export const assignRoomToStudentsBatchController = async (req, res) => {
+    const { studentIds } = req.body;
+
+    if (!studentIds || !Array.isArray(studentIds) || studentIds.length === 0) {
+        return res.status(400).json({ success: false, error: 'An array of student IDs is required in the request body.' });
+    }
+
+    try {
+        const batchResults = await batchAssignRoomsToStudents(studentIds);
+
+        const successfulAssignments = batchResults.filter(r => r.status === 'success');
+        const failedAssignments = batchResults.filter(r => r.status === 'failed'); // Catch explicitly 'failed'
+        const errorAssignments = batchResults.filter(r => r.status === 'error'); // Catch explicitly 'error'
+
+        return res.status(200).json({
+            success: true,
+            message: `Batch assignment completed. ${successfulAssignments.length} successful, ${failedAssignments.length} failed, ${errorAssignments.length} errors.`,
+            results: batchResults,
+            summary: {
+                totalProcessed: batchResults.length,
+                successful: successfulAssignments.length,
+                failed: failedAssignments.length,
+                errors: errorAssignments.length,
+                successfulStudents: successfulAssignments.map(r => r.studentId),
+                failedStudents: failedAssignments.map(r => ({ id: r.studentId, message: r.message })),
+                errorStudents: errorAssignments.map(r => ({ id: r.studentId, message: r.message }))
+            }
+        });
+
+    } catch (error) {
+        console.error('Error in assignRoomToStudentsBatchController (outer catch):', error.message);
+        return res.status(500).json({ success: false, error: 'Failed to complete batch assignment due to a server error.' });
     }
 };

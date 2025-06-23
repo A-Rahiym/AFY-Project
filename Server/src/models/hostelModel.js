@@ -229,3 +229,29 @@ export const getAvailableRoomsInHostel = async (hostelId) => {
         throw error;
     }
 };
+
+export const getAvailableRoomsInHostelRpc = async (hostelId, studentGender) => {
+    try {
+        // --- IMPORTANT: This is the change! Call the RPC directly. ---
+        // Ensure that both hostelId and studentGender are passed, as the RPC expects both.
+        const { data, error } = await supabase.rpc('get_available_rooms_with_occupancy', {
+            p_hostel_id: hostelId,         // Matches the first parameter of your RPC
+            p_student_gender: studentGender // Matches the second parameter of your RPC
+        });
+        // --- END OF CHANGE ---
+
+        if (error) {
+            console.error(`Error fetching available rooms for hostel ${hostelId} (gender ${studentGender}) via RPC:`, error.message);
+            throw new Error(`Failed to retrieve available rooms: ${error.message}`);
+        }
+
+        // The RPC function already returns the data in the desired flattened structure,
+        // including the calculated `current_occupancy`.
+        // So, no further .map() or filtering is typically needed here on the JS side
+        // unless you want to re-process the data for a different format.
+        return data || []; // Ensure it returns an array even if data is null
+    } catch (error) {
+        // Re-throw the error so the calling service/controller can catch and respond
+        throw error;
+    }
+};
