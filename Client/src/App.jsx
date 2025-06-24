@@ -9,6 +9,7 @@ import Dashboard from './routes/Dashboard';
 import AccommodationPayment from './routes/AccomodationPayment';
 import HostelAndRoomBooking from './routes/HostelAndRoomBooking';
 import HostelChoicePage from './routes/HostelChoicePage';
+import AdminHostelAssignment from './routes/AdminHostelAssignment';
 import { AuthProvider } from './Context/AuthContext';
 
 const AppContent = () => {
@@ -32,6 +33,7 @@ const AppContent = () => {
         <Route path="/accommodation-payment" element={<AccommodationPayment />} />
          <Route path="/choose-hostel" element={<HostelChoicePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin-assignment" element={<AdminHostelAssignment />} />
       </Routes>
     </div>
   );

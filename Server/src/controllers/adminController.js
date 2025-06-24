@@ -1,5 +1,7 @@
 // src/controllers/adminController.js
 import { assignRoomToStudentByChoices , batchAssignRoomsToStudents } from '../services/adminAssignmentService.js'; // Make sure this path is correct
+import { fetchRequestedStudents } from '../models/adminModel.js';
+
 
 /**
  * Controller for an administrator to assign a room to a student based on their choices.
@@ -91,5 +93,29 @@ export const assignRoomToStudentsBatchController = async (req, res) => {
     } catch (error) {
         console.error('Error in assignRoomToStudentsBatchController (outer catch):', error.message);
         return res.status(500).json({ success: false, error: 'Failed to complete batch assignment due to a server error.' });
+    }
+};
+
+export const getRequestedStudents = async (req, res) => {
+    try {
+        const { data: students, error } = await fetchRequestedStudents();
+
+        if (error) {
+            console.error('Error fetching requested students:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to fetch requested students.',
+                error: error.message
+            });
+        }
+
+        res.status(200).json({ success: true, students });
+    } catch (error) {
+        console.error('Unhandled error in getRequestedStudents:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An unexpected error occurred.',
+            error: error.message
+        });
     }
 };
