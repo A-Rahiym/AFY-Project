@@ -3,8 +3,26 @@ import express from 'express';
 import { assignRoomToStudentController ,
        assignRoomToStudentsBatchController,
        getRequestedStudents} from '../controllers/adminController.js';
-
+import {adminLogin, adminRegister} from '../controllers/authController.js';       
 const adminRouter = express.Router();
+
+
+
+adminRouter.post('/login', adminLogin);
+
+/**
+ * @route POST /api/auth/admin/register
+ * @description Public endpoint for registering new admin users.
+ * (Consider protecting this in production, e.g., only allowing existing admins to create new ones).
+ * @access Public (for initial setup)
+ */
+
+
+adminRouter.post('/register', adminRegister);
+
+
+
+
 
 adminRouter.get(
     '/students/requested',

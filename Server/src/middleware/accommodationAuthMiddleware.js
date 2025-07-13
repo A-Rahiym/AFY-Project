@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getStudentByRegNumber } from '../models/studentModel.js';
+import { getStudentByRegNo } from '../models/studentModel.js';
 
 export const accommodationAuthMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -17,7 +17,7 @@ export const accommodationAuthMiddleware = async (req, res, next) => {
     const { reg_number } = decoded;
 
     // Get student by reg_number
-    const student = await getStudentByRegNumber(reg_number);
+    const student = await getStudentByRegNo(reg_number);
 
     // Collect errors
     const errors = [];

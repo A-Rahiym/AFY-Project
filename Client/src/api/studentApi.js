@@ -10,6 +10,7 @@ export const registerStudent = async (studentData) => {
 
 // Login
 export const loginStudent = async (loginData) => {
+  console.log(loginData)
   const res = await axiosInstance.post('/student/login', loginData);
   return res.data;
 };
