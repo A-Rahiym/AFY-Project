@@ -29,6 +29,8 @@ export const generateToken = (user, userType) => {
  * @param {string} token - The JWT token to verify.
  * @returns {object|null} The decoded payload if valid (including userType), null otherwise.
  */
+
+
 export const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(token, JWT_SECRET);

@@ -28,22 +28,24 @@ export const authMiddleware = (req, res, next) => {
 //  */
 
 export const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers["authorization"];
 
-    if (token == null) {
-        return res.status(401).json({ success: false, message: 'Authentication token required.' });
-    }
-
-    const decodedUser = verifyToken(token);
-
-    if (!decodedUser) {
-        return res.status(403).json({ success: false, message: 'Invalid or expired token.' });
-    }
-
-    // Now, req.user will contain id, email, and userType ('admin' or 'student')
-    req.user = decodedUser;
-    next();
+  // 🔒 Check if Authorization header is properly formatted
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized: No token provided" });
+  }
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = verifyToken(token); // 🧠 Decode token
+    next(); // ✅ Pass control to next middleware
+  } catch (err) {
+    console.error("Token verification error:", err.message);
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized: Invalid or expired token" });
+  }
 };
 
 /**

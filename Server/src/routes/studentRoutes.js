@@ -17,7 +17,7 @@ import {
 
 
 import { accommodationAuthMiddleware } from "../middleware/accommodationAuthMiddleware.js";
-import { authMiddleware } from "../middleware/authMiddleware.js";
+import { authMiddleware, authenticateToken } from "../middleware/authMiddleware.js";
 import studentProfileMiddleware from "../middleware/studentProfileMiddleware.js";
 
 const studentRouter = express.Router();
@@ -28,7 +28,7 @@ studentRouter.post("/login", loginStudent);
 // Assign token to student
 studentRouter.put(
   "/payment-status/:student_id",
-  authMiddleware,
+  authenticateToken,
   updatePaymentStatus
 );
 // router.put('/:reg_number', assignToken);
@@ -38,7 +38,7 @@ studentRouter.post(
   handleAccommodationSelection
 );
 // Get student profile
-studentRouter.get("/profile", studentProfileMiddleware, getProfile);
+studentRouter.get("/profile", authenticateToken, getProfile);
 
 studentRouter.post("/:studentId/submit-choices", submitHostelChoices);
 export default studentRouter;

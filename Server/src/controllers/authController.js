@@ -115,7 +115,7 @@ export const adminRegister = async (req, res) => {
 export const registerStudent = async (req, res) => {
   const {
     name,
-    reg_number,
+    studentId,
     department,
     faculty,
     level,
@@ -130,7 +130,7 @@ export const registerStudent = async (req, res) => {
   try {
     const student = await createStudent({
       name,
-      reg_number,
+      reg_number : studentId,
       department,
       faculty,
       level,
@@ -142,7 +142,7 @@ export const registerStudent = async (req, res) => {
       is_disabled
     });
 
-    const token = generateToken({ reg_number }, '1h');
+    const token = generateToken({ studentId }, '1h');
     res.status(201).json({ success: true, student, token });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -150,10 +150,11 @@ export const registerStudent = async (req, res) => {
 };
 
 export const loginStudent = async (req, res) => {
-  const { reg_number, password } = req.body;
+  console.log(req.body);
+  const { studentId, password } = req.body;
   try {
     // Find the student by reg_number
-    const student = await getStudentByRegNo(reg_number);
+    const student = await getStudentByRegNo(studentId);
     if (!student) {
       return res.status(404).json({ success: false, error: 'Student not found' });
     }
@@ -164,15 +165,14 @@ export const loginStudent = async (req, res) => {
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
     // Generate JWT token
-    const token = generateToken({ reg_number });
+    const token = generateToken({ studentId });
     // Send the student data and token
     res.status(200).json({
       success: true,
-      student: { id: student.id, name: student.name, reg_number: student.reg_number, gender: student.gender, department: student.department, faculty: student.faculty, level: student.level, has_paid: student.has_paid, token: student.token, assigned_room_id: student.assigned_room_id, student_type: student.student_type, is_official: student.is_official, is_disabled: student.is_disabled,campus: student.campus},
+      student: { id: student.id, name: student.name, studentId:student.reg_number, gender: student.gender, department: student.department, faculty: student.faculty, level: student.level, has_paid: student.has_paid, token: student.token, assigned_room_id: student.assigned_room_id, student_type: student.student_type, is_official: student.is_official, is_disabled: student.is_disabled,campus: student.campus , hostelchoiceId:[student.choice1_hostel_id,student.choice2_hostel_id, student.choice3_hostel_id]},
       token,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-

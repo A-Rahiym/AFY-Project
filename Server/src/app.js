@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 // CORS config
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Allow only your frontend origin
+      origin: ['http://localhost:5173', 'http://localhost:3000'], // Allow only your frontend origin
     credentials: true, // Allow credentials like cookies and headers
   })
 );

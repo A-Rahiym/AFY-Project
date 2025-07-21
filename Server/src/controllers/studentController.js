@@ -157,6 +157,4 @@ export const submitHostelChoices = async (req, res) => {
         console.error('Error in submitHostelChoicesController:', error.message);
         res.status(500).json({ success: false, error: 'Failed to process hostel choices. ' + error.message });
     }
-
-
 };
