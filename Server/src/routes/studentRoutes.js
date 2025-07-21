@@ -5,6 +5,7 @@ import {
   getProfile,
   updatePaymentStatus,
   handleAccommodationSelection,
+  checkStudentEligibility,
 } from "../controllers/studentController.js";
 
 
@@ -13,12 +14,9 @@ import {
   registerStudent,
   loginStudent,
 } from "../controllers/authController.js";
-
-
-
 import { accommodationAuthMiddleware } from "../middleware/accommodationAuthMiddleware.js";
 import { authMiddleware, authenticateToken } from "../middleware/authMiddleware.js";
-import studentProfileMiddleware from "../middleware/studentProfileMiddleware.js";
+
 
 const studentRouter = express.Router();
 // Register a new student
@@ -39,6 +37,8 @@ studentRouter.post(
 );
 // Get student profile
 studentRouter.get("/profile", authenticateToken, getProfile);
+
+studentRouter.get('/:Id/eligibility', checkStudentEligibility);
 
 studentRouter.post("/:studentId/submit-choices", submitHostelChoices);
 export default studentRouter;

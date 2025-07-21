@@ -130,6 +130,19 @@ export const getStudentDetails = async (studentId) => {
 };
 
 
+export const checkStudentEligibilityModel = async (studentId) => {
+  const { data, error } = await supabase
+    .rpc('check_student_eligibility', { student_id: studentId });
+
+  if (error) {
+    throw new Error(`Supabase RPC failed: ${error.message}`);
+  }
+
+  return data[0] // return the first row since it's a `returns table`
+};
+
+
+
 
 export const markStudentAsPaid = async (reg_number) => {
   const { data, error } = await supabase

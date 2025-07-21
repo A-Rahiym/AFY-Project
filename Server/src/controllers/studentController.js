@@ -7,7 +7,8 @@ import {
   updateStudentPayment,
   getStudentByRegNo,
   updateStudentHostelChoices,
-  selectAccommodation
+  selectAccommodation,
+  checkStudentEligibilityModel
 } from '../models/studentModel.js';
 
 import generateToken from '../utils/generatetoken.js';
@@ -70,6 +71,22 @@ export const getProfile = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const checkStudentEligibility = async (req, res) => {
+  try {
+    const studentId = req.params.Id; 
+
+    if (!studentId) {
+      return res.status(400).json({ message: 'Student ID is required' });
+    }
+
+    const result = await checkStudentEligibilityModel(studentId);
+    console.log("result: ",result);
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+}
 
 
 
