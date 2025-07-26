@@ -1,28 +1,18 @@
-// src/components/PaymentStatus.jsx
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { updatePaymentStatus } from '../api/studentApi';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const PaymentStatus = () => {
+  const { studentId, isAuthenticated } = useAuth();
+
   const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [studentId, setStudentId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false);
-  
-
-  useEffect(() => {
-    const storedStudentId = localStorage.getItem('studentId');
-    if (storedStudentId) {
-      setStudentId(storedStudentId);
-    }
-    setIsAuthReady(true);
-  }, []);
 
   const handleUpdate = async () => {
     if (!studentId) {
-      setMessage('❌ Student ID not found in local storage. Please log in.');
+      setMessage('❌ Student ID not found. Please log in.');
       return;
     }
 
@@ -56,11 +46,7 @@ const PaymentStatus = () => {
     }
   };
 
-  if (!isAuthReady) {
-    return <div className="max-w-md mx-auto p-6 text-center text-gray-600">Loading user data...</div>;
-  }
-
-  if (!studentId) {
+  if (!isAuthenticated) {
     return (
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg font-sans text-center">
         <p className="text-red-500 font-semibold mb-4">You need to be logged in to submit your evidence.</p>
@@ -71,7 +57,9 @@ const PaymentStatus = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg font-sans">
-      <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Submit Evidence of School Fees Payment</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+        Submit Evidence of School Fees Payment
+      </h2>
 
       <div className="mb-6">
         <label htmlFor="paymentStatus" className="block text-lg font-medium text-gray-700 mb-2">

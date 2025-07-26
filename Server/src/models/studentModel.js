@@ -103,31 +103,44 @@ export const updateStudentToken = async (reg_number, token) => {
 };
 
 
-export const getStudentDetails = async (studentId) => {
-    const { data, error } = await supabase
-        .from('students')
-        .select(`
-            id,
-            gender,
-            has_paid,
-            fcfs_id,
-            assigned_room_id,
-            choice1_hostel_id,
-            choice2_hostel_id,
-            choice3_hostel_id
-        `)
-        .eq('id', studentId)
-        .single();
+export const getStudentStatus = async (studentId) => {
+  const { data, error } = await supabase
+    .from('students')
+    .select(`
+      has_paid,
+      fcfs_id,
+      assigned_room_id,
+      choice1_hostel:choice1_hostel_id (
+        id,
+        name,
+        campus
+      ),
+      choice2_hostel:choice2_hostel_id (
+        id,
+        name,
+        campus
+      ),
+      choice3_hostel:choice3_hostel_id (
+        id,
+        name,
+        campus
+      )
+    `)
+    .eq('id', studentId)
+    .single();
 
-    if (error) {
-        console.error(`Error fetching student ${studentId}:`, error.message);
-        throw new Error(`Failed to retrieve student details: ${error.message}`);
-    }
-    if (!data) {
-        throw new Error(`Student with ID ${studentId} not found.`);
-    }
-    return data;
+  if (error) {
+    console.error(`Error fetching student ${studentId}:`, error.message);
+    throw new Error(`Failed to retrieve student details: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error(`Student with ID ${studentId} not found.`);
+  }
+
+  return data;
 };
+
 
 
 export const checkStudentEligibilityModel = async (studentId) => {

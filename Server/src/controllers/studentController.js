@@ -3,7 +3,7 @@ import {
   createStudent,
   getStudentById,
   markStudentAsPaid,
-  getStudentDetails,
+  getStudentStatus,
   updateStudentPayment,
   getStudentByRegNo,
   updateStudentHostelChoices,
@@ -89,6 +89,18 @@ export const checkStudentEligibility = async (req, res) => {
 }
 
 
+export const getStudentStatusController = async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    const studentStatus = await getStudentStatus(studentId);
+    res.status(200).json(studentStatus);
+  } catch (error) {
+    console.error("Controller Error:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 export const updatePaymentStatus = async (req, res) => {
     const { student_id } = req.params; // Get student ID from URL parameters
@@ -143,7 +155,7 @@ export const submitHostelChoices = async (req, res) => {
 
     try {
         // Step 1: Perform eligibility checks
-        const student = await getStudentDetails(studentId); // Use studentId from body
+        const student = await getStudentStatus(studentId); // Use studentId from body
 
         if (!student) {
             return res.status(404).json({ success: false, error: `Student with ID ${studentId} not found.` });

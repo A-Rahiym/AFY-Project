@@ -1,44 +1,46 @@
-// pages/Dashboard.js
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
-  const cards = [
-    {
-      title: '💳 Payment Status',
-      description: 'Check your current payment status and history.',
-      route: '/payment-status',
-    },
-    {
-      title: '👤 View Profile',
-      description: 'See and update your personal and academic details.',
-      route: '/profile',
-    },
-    {
-      title: '🏠 Select Accommodation',
-      description: 'Choose your preferred accommodation option.',
-      route: '/select-accommodation',
-    },
-  ];
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-center mb-8">🎓 Student Dashboard</h1>
-
-      <div className="grid md:grid-cols-3 gap-6">
-        {cards.map((card, idx) => (
-          <div
-            key={idx}
-            onClick={() => navigate(card.route)}
-            className="cursor-pointer bg-blue-100 hover:bg-blue-200 transition duration-300 p-6 rounded-xl shadow-md"
-          >
-            <h2 className="text-xl font-semibold mb-2">{card.title}</h2>
-            <p className="text-gray-700">{card.description}</p>
-          </div>
-        ))}
+ <div className="relative p-6 sm:p-10">
+      {/* Notice box - top right */}
+      <div className="absolute right-6 top-6 z-10">
+        <div className="bg-red-600 text-white px-4 py-3 rounded font-semibold w-72 shadow-md">
+          <div className="text-base mb-1">Notice</div>
+          <p className="text-sm font-normal">
+            Please go to the Payments tab to validate your payment before continuing
+          </p>
+        </div>
       </div>
+
+      {/* Main content */}
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Student Dashboard</h1>
+
+      {/* Payment Status */}
+      <div className="mb-8">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2">Payment Status</h2>
+        <div className="bg-blue-100 text-center py-6 rounded text-gray-600 font-medium">
+          Not Submitted
+        </div>
+      </div>
+
+      {/* Allocated Room */}
+      <div className="mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2">Allocated Room</h2>
+        <div className="grid grid-cols-3 bg-blue-100 py-3 px-4 rounded font-bold text-center mb-4">
+          <div>Hostel</div>
+          <div>Block</div>
+          <div>Room</div>
+        </div>
+        <div className="border-2 border-blue-500 rounded p-6 min-h-[120px]" />
+      </div>
+
+      {/* Footer */}
+      <footer className="mt-12 text-center text-sm text-gray-500">
+        © 2025 Ahmadu Bello University Zaria. All rights reserved.
+      </footer>
     </div>
+
   );
 };
 

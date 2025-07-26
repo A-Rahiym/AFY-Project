@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-
+const token = localStorage.getItem('studentToken');
 
 
 export const getHostelDetails = async (gender, campus) => {
@@ -31,7 +31,7 @@ export const checkBooking = async (studentId, token) => {
 };
 
 
-export const bookAccommodation = async (roomId, studentId, token) => {
+export const bookAccommodation = async (roomId, studentId) => {
   console.log("Attempting to book accommodation..."); // Log for debugging
   const res = await axiosInstance.post(
     '/hostels/book', // Endpoint for booking

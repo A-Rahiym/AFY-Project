@@ -1,56 +1,94 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
+import { Bell } from "lucide-react";
 
 const Navbar = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { student, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("studentId");
-    navigate("/login");
+    logout();
+    navigate("/studentLogin");
   };
 
-  return (
-    <nav className="bg-black text-white py-4 px-6 shadow-md">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Student Accommodation Portal</h1>
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
 
-        <ul className="flex items-center gap-6">
-          <li>
-            <Link to="/dashboard" className="hover:underline">
-              Dashboard
-            </Link>
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const menuItems = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Hostel Selection", path: "/choose-hostel" },
+    { name: "Payment", path: "/payment-status" },
+    { name: "FAQ", path: "/faq" },
+    { name: "Profile", path: "/profile" },
+  ];
+
+  return (
+    <nav className="bg-[#042b50] text-white h-16 px-8 flex items-center justify-between relative">
+      <div className="text-white font-semibold text-sm">
+        ABU Accommodation Portal
+      </div>
+      <ul className="flex items-center space-x-6">
+        {menuItems.map((item) => (
+          <li
+            key={item.name}
+            className={`py-2 px-3 rounded ${
+              location.pathname === item.path ? "bg-[#0084ff] font-bold" : ""
+            }`}
+          >
+            <Link to={item.path}>{item.name}</Link>
           </li>
-          <li>
-            <Link to="/payment-status" className="hover:underline">
-              Payment Status
-            </Link>
-          </li>
-          <li>
-            <Link to="/choose-hostel" className="hover:underline">
-              Choose Hostel
-            </Link>
-          </li>
-          <li>
-            <Link to="/book-room" className="hover:underline">
-              Book Room
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile" className="hover:underline">
+        ))}
+
+        <li>
+          <Bell className="text-yellow-400 w-5 h-5" />
+        </li>
+        <li className="text-white font-semibold text-sm">
+          {student?.fullName || student?.name || "Student"}
+        </li>
+        <li className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="focus:outline-none"
+          >
+            <div className="w-8 h-8 rounded-full bg-gray-400" />
+          </button>
+
+          {/* Dropdown with animation */}
+          <div
+            className={`absolute right-0 mt-2 bg-white text-black rounded shadow-lg w-40 origin-top-right transition-all duration-200 transform z-50 ${
+              isDropdownOpen
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-95 pointer-events-none"
+            }`}
+          >
+            <Link
+              to="/profile"
+              className="block px-4 py-2 hover:bg-gray-100 transition"
+              onClick={() => setIsDropdownOpen(false)}
+            >
               Profile
             </Link>
-          </li>
-          <li>
             <button
               onClick={handleLogout}
-              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+              className="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
             >
               Logout
             </button>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </li>
+      </ul>
     </nav>
   );
 };

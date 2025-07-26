@@ -6,6 +6,7 @@ import {
   updatePaymentStatus,
   handleAccommodationSelection,
   checkStudentEligibility,
+  getStudentStatusController,
 } from "../controllers/studentController.js";
 
 
@@ -39,6 +40,8 @@ studentRouter.post(
 studentRouter.get("/profile", authenticateToken, getProfile);
 
 studentRouter.get('/:Id/eligibility', checkStudentEligibility);
+
+studentRouter.get('/:studentId/status', getStudentStatusController);
 
 studentRouter.post("/:studentId/submit-choices", submitHostelChoices);
 export default studentRouter;

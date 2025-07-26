@@ -269,6 +269,8 @@ const getStudentDetailsForAssignment = async (studentId) => {
 // };
 
 
+
+
 export const assignRoomToStudentByChoices = async (studentId) => {
     console.log(`[ASSIGN_DEBUG] Starting assignment attempt for student: ${studentId}`);
 

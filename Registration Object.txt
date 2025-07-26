@@ -1,0 +1,42 @@
+{
+    "name": "a", *
+    "studentId": "U18co1002", *
+    "password": "123456",*
+    "confirmPassword": "123456",
+    "faculty": "Engineering",*
+    "department": "Chemical Engineering",*
+    "campus": "Samaru",*
+    "level": "200",*
+    "gender": "Male",*
+    "accessibilityNeeds": ""
+}
+
+  const {
+    name,*
+    reg_number, *
+    department, *
+    faculty,*
+    level,*
+    gender,*
+    password,*
+    campus,*
+    student_type*,
+    is_official,
+    is_disabled
+  } = req.body;
+
+
+{
+    "name": "a",
+    "studentId": "U18co1002",
+    "password": "123456",
+    "confirmPassword": "123456",
+    "faculty": "Engineering",
+    "department": "Agricultural Engineering",
+    "campus": "samaru",
+    "level": "200",
+    "student_type": "undergraduate",
+    "gender": "Male",
+    "accessibilityNeeds": ""
+}
+

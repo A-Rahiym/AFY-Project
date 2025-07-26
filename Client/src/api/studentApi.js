@@ -1,7 +1,10 @@
 // src/api/studentApi.js
 import axiosInstance from './axiosInstance';
 
-const token = localStorage.getItem('token');
+
+const token = localStorage.getItem('studentToken');
+
+
 // Register
 export const registerStudent = async (studentData) => {
   const res = await axiosInstance.post('/student/register', studentData);
@@ -53,7 +56,8 @@ export const selectAccommodation = async (formData, token) => {
   return res.data;
 };
 
-export const getStudentProfile = async (id, token) => {
+export const getStudentProfile = async (id) => {
+  console.log(id, token);
   const res = await axiosInstance.get(`/student/profile?id=${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
