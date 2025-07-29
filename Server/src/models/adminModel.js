@@ -8,7 +8,7 @@ export const fetchRequestedStudents = async () => {
   return await supabase
     .from("students")
     .select(
-      "id, name, gender, choice1_hostel_id, choice2_hostel_id, choice3_hostel_id, assigned_room_id"
+      "id, name,gender, reg_number,department,level,choice1_hostel_id, choice2_hostel_id, choice3_hostel_id, assigned_room_id"
     )
     .not("choice1_hostel_id", "is", null)
     .is("assigned_room_id", null);
@@ -69,3 +69,5 @@ export const getHostelOccupancySummary = async () => {
   if (error) throw error;
   return data;
 };
+
+

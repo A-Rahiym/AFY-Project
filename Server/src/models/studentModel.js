@@ -268,3 +268,12 @@ export const updateStudentHostelChoices = async (studentId, choice1Id, choice2Id
     console.log(`Student ${studentId} choices updated.`);
     return data[0];
 };
+
+export const getStudentRoomInfo = async (studentId) => {
+  const { data, error } = await supabase.rpc('get_student_room_info', {
+    student_uuid : studentId,
+  });
+  if (error) throw error;
+  console.log(data)
+  return data;
+};

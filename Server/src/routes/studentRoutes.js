@@ -7,6 +7,7 @@ import {
   handleAccommodationSelection,
   checkStudentEligibility,
   getStudentStatusController,
+  assignRoomToStudentController,
 } from "../controllers/studentController.js";
 
 
@@ -44,4 +45,7 @@ studentRouter.get('/:Id/eligibility', checkStudentEligibility);
 studentRouter.get('/:studentId/status', getStudentStatusController);
 
 studentRouter.post("/:studentId/submit-choices", submitHostelChoices);
+// POST /student/room-info
+// GET /student/room-info/:studentId
+studentRouter.get("/:studentId/room-info",assignRoomToStudentController);
 export default studentRouter;

@@ -8,7 +8,9 @@ import {
   getStudentByRegNo,
   updateStudentHostelChoices,
   selectAccommodation,
-  checkStudentEligibilityModel
+  checkStudentEligibilityModel,
+  getStudentRoomInfo,
+
 } from '../models/studentModel.js';
 
 import generateToken from '../utils/generatetoken.js';
@@ -134,6 +136,30 @@ export const updatePaymentStatus = async (req, res) => {
         console.error('Error updating student payment status:', error.message);
         res.status(500).json({ success: false, error: error.message });
     }
+};
+
+
+export const assignRoomToStudentController = async (req, res) => {
+  const { studentId } = req.params;
+  // --- Input Validation ---
+  if (!studentId) {
+    return res.status(400).json({
+      success: false,
+      error: "Student ID is required as a route parameter.",
+    });
+  }
+  try {
+    const data = await getStudentRoomInfo(studentId);
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: error.message || "Something went wrong.",
+    });
+  }
 };
 
 export const submitHostelChoices = async (req, res) => {

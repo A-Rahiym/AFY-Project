@@ -19,7 +19,6 @@ import {
  */
 export const assignRoomToStudentController = async (req, res) => {
   const { studentId } = req.body;
-
   // --- Input Validation ---
   if (!studentId) {
     return res
